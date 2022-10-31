@@ -1,0 +1,46 @@
+{
+  "name": "prebuilder",
+  "version": "1.0.0",
+  "description": "A pre-processor that allows for C#-like directives for javascript",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rollup -c rollup.config.mjs",
+    "dev": "rollup -w -c rollup.config.mjs",
+    "test-resolve": "node dist/index.js resolve --dir \"test/src\" --log",
+    "test-restore": "node dist/index.js restore --log",
+    "test-start": "node dist/index.js start \"npx rollup -c test/rollup.config.mjs\" --dir \"test/src\" --log"
+  },
+  "bin": {
+    "prebuild": "dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prebuilderjs/prebuilder.git"
+  },
+  "keywords": [
+    "node",
+    "prebuilderjs",
+    "prebuilder",
+    "prebuild",
+    "preprocessor",
+    "preprocess",
+    "directives",
+    "defines",
+    "build"
+  ],
+  "author": "ANFADEV",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/prebuilderjs/prebuilder/issues"
+  },
+  "homepage": "https://github.com/prebuilderjs/prebuilder#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "rollup": "^3.0.0"
+  },
+  "dependencies": {
+    "@prebuilder/lib": "^1.6.10",
+    "enquirer": "^2.3.6"
+  }
+}

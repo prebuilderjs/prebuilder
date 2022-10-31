@@ -1,0 +1,5 @@
+node_modules
+dist
+.prebuilder-storage
+.vscode
+.DS_Store
