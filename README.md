@@ -1,10 +1,10 @@
-<p style="text-align:center" aligh="center">
+<p style="text-align:center" align="center">
 
 </p>
 
-<h1 style="text-align:center" aligh="center">Prebuilder</h1>
+<h1 style="text-align:center" align="center">Prebuilder</h1>
 
-<p style="text-align:center" aligh="center">
+<p style="text-align:center" align="center">
     <a href="https://www.npmjs.com/package/prebuilder" alt="Npm version">
         <img src="https://img.shields.io/npm/v/prebuilder">
     </a>
@@ -16,7 +16,7 @@
     </a>
 </p>
 
-<p style="text-align:center" aligh="center">
+<p style="text-align:center" align="center">
 A pre-processor that allows for C#-like directives for <span style="color: #a59b28; font-weight:bold">Javascript</span>, <span style="color: #126f9b; font-weight:bold">Typescript</span>, <span style="color: #b3690f; font-weight:bold">Rust</span>, <span style="color: #969762; font-weight:bold">Python</span> & any other text-based file!
 </p>
 
@@ -36,6 +36,9 @@ This is very useful in various cases, like for example:
 - Enabling *assertions*, *debugging* and any sort of *backdoor* in non-production builds.
 - Simplifying unit testing by including test functions only in non-production builds.
 
+## Features
+- Source analysis: <br>remembers which are unchanged source files, and skips them for a faster preprocess.
+- Comprehensive internal flow checks: <br>preprocess errors like for a missing `#endif` do not stop prebuilding mid-way avoiding any loss of unresolved code.
 
 ## Install
 
