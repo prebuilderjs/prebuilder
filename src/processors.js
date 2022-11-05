@@ -10,13 +10,16 @@ import { resolveScripts, restoreScripts } from './processor-functions';
  * @param {string} sourceDir Source folder's relative path
  * @param {object} options 
  * ```txt
- * formats: Array<string>       List of file formats to preprocess
- *                              ['.js', '.ts']  -> default value
- *                              '*' or []       -> preprocess all files
+ * formats: Array<string>   (default: ['.js', '.ts'])
+ *      List of file formats to preprocess.
+ *      Ex:     ['.js', '.ts']  -> default value
+ *              '*' or []       -> preprocess all files
  * 
- * preprocessOptions: Object    Preprocessing options
+ * preprocessOptions: Object
+ *      Preprocessing options.
  * 
- * log: boolean                 Enable debug logging
+ * log: boolean
+ *      Enable debug logging.
  * ```
  */
 export async function resolve(sourceDir, options = { formats: ['.js', '.ts'], preprocessOptions: {}, log: false}) {
@@ -77,7 +80,7 @@ export async function resolve(sourceDir, options = { formats: ['.js', '.ts'], pr
         //         // console.log("\nresolving... (overwrite)\n");
 
         //         // 3) do nothing & add scripts diff to cached file later (after classifying scripts & before cazching scripts)
-        //         // see IDEA_3 comment below
+        //         // see IDEA_3 comment inside resolveScripts()
         //         console.log("\nresolving... (overwrite)\n");
         //     } else {
         //         LogCond("\naborting...\n", options.log);
@@ -107,7 +110,8 @@ export async function resolve(sourceDir, options = { formats: ['.js', '.ts'], pr
  * Restores back original scripts (with unresolved directives).
  * @param {object} options 
  * ```txt
- * log: boolean                 Enable debug logging
+ * log: boolean
+ *      Enable debug logging
  * ```
  */
 export function restore(options = {}) {
@@ -134,13 +138,16 @@ export function restore(options = {}) {
  * @param {string} command terminal comand to run (on preprocessed code).
  * @param {object} options 
  * ```txt
- * formats: Array<string>       List of file formats to preprocess
- *                              ['.js', '.ts']  -> default value
- *                              '*' or []       -> preprocess all files
+ * formats: Array<string>   (default: ['.js', '.ts'])
+ *      List of file formats to preprocess.
+ *      Ex:     ['.js', '.ts']  -> default value
+ *              '*' or []       -> preprocess all files
  * 
- * preprocessOptions: Object    Preprocess options
+ * preprocessOptions: Object
+ *      Preprocessing options.
  * 
- * log: boolean                 Enable debug logging
+ * log: boolean
+ *      Enable debug logging.
  * ```
  */
 export async function start(sourceDir, command, options) {
