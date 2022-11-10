@@ -3,7 +3,7 @@ const { Select, Confirm } = require('enquirer');
 
 import { Load, Save } from './database.js';
 import { LogError, LogColor, LogWarn, LogCond } from './logger';
-import { resolveScripts, restoreScripts } from './processor-functions';
+import { resolveScripts, restoreScripts } from './preprocess-functions';
 
 /**
  * Resolves directives in every script of a given source folder, and caches their original versions.

@@ -2,7 +2,7 @@ const preprocess = require('@prebuilder/lib').default;
 const fs = require('fs');
 const path = require('path');
 
-import { getFiles, cacheFile, restoreFile, emptyCache, removeFromCache } from './fileManagment';
+import { getFiles, cacheFile, restoreFile, emptyCache, removeFromCache } from './file-manager';
 import { LogError, LogColor, LogWarn, LogCond } from './logger';
 
 

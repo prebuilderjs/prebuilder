@@ -1,7 +1,7 @@
-import { resolve, restore, start } from './processors.js';
+import { resolve, restore, start } from './preprocess.js';
 import { LogError, LogColor, LogWarn } from './logger';
 import { helpString } from './help';
-import { parseArgs } from './argManagment';
+import { parseArgs } from './arg-manager';
 
 global.temp_folder = ".prebuilder-storage"; //"node_modules/.temp";
 
