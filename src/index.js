@@ -1,44 +1,50 @@
-// const { resolve, restore, start } = require('./processors.js');
 import { resolve, restore, start } from './processors.js';
 import { LogError, LogColor, LogWarn } from './logger';
 import { helpString } from './help';
+import { parseArgs } from './argManagment';
 
-const [,, ...args] = process.argv;
 global.temp_folder = ".prebuilder-storage"; //"node_modules/.temp";
+
 let paramDefinitions = [
     {
-        cmd: '--dir',
+        param: '--dir',
+        alias: '-d',
         name: 'dir',
         needsValue: true,
+        commands: ['resolve', 'start'],
     },
     {
-        cmd: '--formats',
+        param: '--formats',
+        alias: '-f',
         name: 'formats',
         needsValue: true,
+        commands: ['resolve', 'start'],
     },
     {
-        cmd: '--log',
+        param: '--log',
         name: 'log',
         needsValue: false,
     },
     {
-        cmd: '--preprocessDefines',
+        param: '--preprocessDefines',
+        alias: '-defs',
         name: 'preprocessDefines',
         needsValue: true,
+        commands: ['resolve', 'start'],
     },
-]
+];
+let processInstructions = parseArgs(paramDefinitions);
 
-if (args.length >= 1) {
+if (processInstructions) {
 
-    let currentParams = SearchArgsForParams(paramDefinitions);
-    let options = makeOptions(currentParams);
+    let options = makeOptions(processInstructions.params);
 
-    switch (args[0]) {
+    switch (processInstructions.command) {
         case "resolve":{
 
-            if (currentParams.dir.present) {
+            if (processInstructions.params.dir.present) {
 
-                resolve(currentParams.dir.value, options)
+                resolve(processInstructions.params.dir.value, options)
                     .then().catch(err => console.error(err));
             } else {
 
@@ -53,11 +59,11 @@ if (args.length >= 1) {
         }
         case "start":{
 
-            if (currentParams.dir.present) {
-                // check first argumant is not a known parameter (cmd string is required first)
-                if (!paramDefinitions.some( cmdDef => cmdDef.cmd == args[1])) {
+            if (processInstructions.params.dir.present) {
+                // check first argument is not a known parameter (cmd string is required first)
+                if (!paramDefinitions.some( prmDef => prmDef.param == processInstructions.args[1]|| prmDef.alias == processInstructions.args[1])) {
                     
-                    start(currentParams.dir.value, args[1], options)
+                    start(processInstructions.params.dir.value, processInstructions.args[1], options)
                         .then().catch(err => console.error(err));
                 } else {
 
@@ -106,42 +112,6 @@ function makeOptions(currentParams) {
     }
 
     return options;
-}
-
-function SearchArgsForParams(paramDefinitions) {
-
-    let tempParams = {};
-    
-    for (let i = 0; i < paramDefinitions.length; i++) {
-
-        let parameterObj = { present: false, value: undefined };
-
-        // if this command definition's cmd present in current arg list
-        let prmIndex = args.indexOf(paramDefinitions[i].cmd)
-        if (prmIndex >= 0) {
-            
-            parameterObj.present = true;
-                
-            // if command needs value
-            if (paramDefinitions[i].needsValue) {
-
-                // if next argument (potential value) is present && if next argument is not a known parameter
-                if (args.length >= prmIndex && !paramDefinitions.some( prmDef => prmDef.cmd == args[prmIndex + 1])) {
-                    parameterObj.value = args[prmIndex + 1];
-                } else {
-                    LogError("prebuilder command called with arg: '" + paramDefinitions[i].cmd + "' without passing arg value.", false, true);
-                }
-            }
-
-        } else {
-            parameterObj.present = false;
-        }
-
-        // push
-        tempParams[paramDefinitions[i].name] = parameterObj;
-    }
-
-    return tempParams;
 }
 
 // /**
