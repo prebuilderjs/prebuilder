@@ -89,9 +89,9 @@ prebuild start "my command" --dir "src"
 # examples for bundling your app with resolved code:
 # - webpack
 prebuild start "npx webpack --config example.config.js" --dir "src"
-# - rollup
-prebuild start "npx tsc" --dir "src"
 # - typescript
+prebuild start "npx tsc" --dir "src"
+# - rollup
 prebuild start "npx rollup -c rollup.config.mjs" --dir "src"
 ```
 
