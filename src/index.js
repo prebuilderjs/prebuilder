@@ -2,6 +2,7 @@ import { resolve, restore, start } from './preprocess.js';
 import { LogError, LogColor, LogWarn } from './logger';
 import { helpString } from './help';
 import { parseArgs } from './arg-manager';
+import { getConfigOptions } from './config-manager';
 
 global.temp_folder = ".prebuilder-storage"; //"node_modules/.temp";
 
@@ -9,26 +10,43 @@ let paramDefinitions = [
     {
         param: '--dir',
         alias: '-d',
-        name: 'dir',
+        objectPath: 'dir',
         needsValue: true,
         commands: ['resolve', 'start'],
     },
     {
         param: '--formats',
         alias: '-f',
-        name: 'formats',
+        objectPath: 'formats',
         needsValue: true,
+        canBeList: true,
         commands: ['resolve', 'start'],
     },
     {
         param: '--log',
-        name: 'log',
+        objectPath: 'log',
         needsValue: false,
     },
     {
         param: '--preprocessDefines',
         alias: '-defs',
-        name: 'preprocessDefines',
+        objectPath: 'preprocessOptions.defines',
+        needsValue: true,
+        canBeList: true,
+        commands: ['resolve', 'start'],
+    },
+    {
+        param: '--preprocessMode',
+        alias: '-mode',
+        objectPath: 'preprocessOptions.mode',
+        needsValue: true,
+        canBeList: true,
+        commands: ['resolve', 'start'],
+    },
+    {
+        param: '--config',
+        alias: '-c',
+        objectPath: 'config',
         needsValue: true,
         commands: ['resolve', 'start'],
     },
@@ -37,14 +55,14 @@ let processInstructions = parseArgs(paramDefinitions);
 
 if (processInstructions) {
 
-    let options = makeOptions(processInstructions.params);
+    let options = getConfigOptions(processInstructions.params);
 
     switch (processInstructions.command) {
         case "resolve":{
 
-            if (processInstructions.params.dir.present) {
-
-                resolve(processInstructions.params.dir.value, options)
+            if (options.dir) {
+            
+                resolve(options.dir, options)
                     .then().catch(err => console.error(err));
             } else {
 
@@ -59,11 +77,11 @@ if (processInstructions) {
         }
         case "start":{
 
-            if (processInstructions.params.dir.present) {
+            if (options.dir) {
                 // check first argument is not a known parameter (cmd string is required first)
                 if (!paramDefinitions.some( prmDef => prmDef.param == processInstructions.args[1]|| prmDef.alias == processInstructions.args[1])) {
                     
-                    start(processInstructions.params.dir.value, processInstructions.args[1], options)
+                    start(options.dir, processInstructions.args[1], options)
                         .then().catch(err => console.error(err));
                 } else {
 
@@ -84,34 +102,6 @@ if (processInstructions) {
         default:
             LogError("prebuilder called without any command argument.", false, true);
     }
-}
-
-function makeOptions(currentParams) {
-    let options = {};
-    
-    // formats
-    if (currentParams.formats.present) {
-        try {
-            options.formats = currentParams.formats.value.replaceAll(' ', '').split(',');
-        } catch (err) {
-            LogError("prebuilder error: invalid --formats arg value, value must be a string \".js\" or \".js, .ts\".\n" + err, false, true);
-        }
-    }
-    
-    // log
-    options.log = currentParams.log.present;
-    
-    // preprocess options
-    options.preprocessOptions = {};
-    if (currentParams.preprocessDefines.present) {
-        try {
-            options.preprocessOptions.defines = currentParams.preprocessDefines.value.replaceAll(' ', '').split(',');
-        } catch (err) {
-            LogError("prebuilder error: invalid --preprocessDefines arg value, value must be a string \"MY_DEFINE\" or \"DEFINE1, DEFINE2\".\n" + err, false, true);
-        }
-    }
-
-    return options;
 }
 
 // /**

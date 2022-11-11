@@ -15,7 +15,7 @@ export function LogError(text, stack = true, doThrow = true) {
     }
 
     if (doThrow) {
-        throw '';
+        throw text;
     }
 }
 
