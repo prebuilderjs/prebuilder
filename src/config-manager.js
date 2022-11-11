@@ -1,4 +1,5 @@
 // import { LogError, LogColor, LogWarn } from './logger';
+const path = require('path');
 
 /**
  * Extract options from current process's parameters, and config file.
@@ -12,14 +13,14 @@ export function getConfigOptions(processParameters) {
     // get specified config file, with error report
     if (processParameters.config) {
         try {
-            config = require("../" + processParameters.config);
+            config = require(path.resolve(processParameters.config));
         } catch {
             throw 'Could not find prebuilder config file "' + processParameters.config + '"';
         }
     } else {
         // try get default config file
         try {
-            config = require('../prebuilder.config.js');
+            config = require(path.resolve("prebuilder.config.js"));
         } catch {console.log('no config file');}
     }
 
