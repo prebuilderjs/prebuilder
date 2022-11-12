@@ -14,6 +14,7 @@
     <a href="https://github.com/prebuilderjs/prebuilder" alt="Licence">
         <img src="https://img.shields.io/github/license/prebuilderjs/prebuilder">
     </a>
+    <img src="https://visitor-badge.glitch.me/badge?page_id=prebuilderjs.prebuilder&style=flat">
 </p>
 
 <p style="text-align:center" align="center">
@@ -216,15 +217,15 @@ class MyClass {
 </details>
 
 ## Planned features
-- use a config .json file
-- add possibility to include / exclude files/folders
-- implement `#elseif` directive
-- implement `#put` directive
-- implement `#define-local` directive
-- support html comments (for comment mode)
-- support css comments (for comment mode)
-- allow to have `#else` / `#endif` in same line as `#if`
-- directive extensibility
+- [x] use a config .json file
+- [ ] add possibility to include / exclude files/folders
+- [ ] implement `#elseif` directive
+- [ ] implement `#put` directive
+- [ ] implement `#define-local` directive
+- [ ] support html comments (for comment mode)
+- [ ] support css comments (for comment mode)
+- [ ] allow to have `#else` / `#endif` in same line as `#if`
+- [ ] directive extensibility
 
 ## Current limitations
 - commented mode requires no space between double slash and directive `//#if` not `// #if` (solution planned).
