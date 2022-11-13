@@ -5,53 +5,7 @@ import { parseArgs } from './arg-manager';
 import { getConfigOptions } from './config-manager';
 import paramDefinitions from './command-definitions';
 
-global.temp_folder = ".prebuilder-storage"; //"node_modules/.temp";
-
-// let paramDefinitions = [
-//     {
-//         param: '--dir',
-//         alias: '-d',
-//         objectPath: 'dir',
-//         needsValue: true,
-//         commands: ['resolve', 'start'],
-//     },
-//     {
-//         param: '--formats',
-//         alias: '-f',
-//         objectPath: 'formats',
-//         needsValue: true,
-//         canBeList: true,
-//         commands: ['resolve', 'start'],
-//     },
-//     {
-//         param: '--log',
-//         objectPath: 'log',
-//         needsValue: false,
-//     },
-//     {
-//         param: '--preprocessDefines',
-//         alias: '-defs',
-//         objectPath: 'preprocessOptions.defines',
-//         needsValue: true,
-//         canBeList: true,
-//         commands: ['resolve', 'start'],
-//     },
-//     {
-//         param: '--preprocessMode',
-//         alias: '-mode',
-//         objectPath: 'preprocessOptions.mode',
-//         needsValue: true,
-//         canBeList: true,
-//         commands: ['resolve', 'start'],
-//     },
-//     {
-//         param: '--config',
-//         alias: '-c',
-//         objectPath: 'config',
-//         needsValue: true,
-//         commands: ['resolve', 'start'],
-//     },
-// ];
+global.temp_folder = ".prebuilder-storage";
 let processInstructions = parseArgs(paramDefinitions);
 
 if (processInstructions) {

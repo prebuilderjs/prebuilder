@@ -27,16 +27,20 @@ import { LogError, LogColor, LogWarn } from './logger';
  */
 export function parseArgs(paramDefs) {
 
+    // args
     let result = { args: process.argv.slice(2) };
-
-    if (result.args.length == 0) return null;
-
-    // check command slot is not a known parameter
-    if (!paramDefs.some( prmDef => prmDef.param == result.args[0] || prmDef.alias == result.args[0])) {
-        
-        result.command = result.args[0];
-    }
     
+    // command
+    if (result.args.length > 0) {
+        // check command slot is not a known parameter
+        if (!paramDefs.some( prmDef => prmDef.param == result.args[0] || prmDef.alias == result.args[0])) {
+            
+            result.command = result.args[0];
+        }
+    } else
+        result.command = null;
+    
+    // params
     result.params = SearchForParams(result.command, result.args.slice(1), paramDefs);
 
     return result;
