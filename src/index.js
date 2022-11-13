@@ -3,54 +3,55 @@ import { LogError, LogColor, LogWarn } from './logger';
 import { helpString } from './help';
 import { parseArgs } from './arg-manager';
 import { getConfigOptions } from './config-manager';
+import paramDefinitions from './command-definitions';
 
 global.temp_folder = ".prebuilder-storage"; //"node_modules/.temp";
 
-let paramDefinitions = [
-    {
-        param: '--dir',
-        alias: '-d',
-        objectPath: 'dir',
-        needsValue: true,
-        commands: ['resolve', 'start'],
-    },
-    {
-        param: '--formats',
-        alias: '-f',
-        objectPath: 'formats',
-        needsValue: true,
-        canBeList: true,
-        commands: ['resolve', 'start'],
-    },
-    {
-        param: '--log',
-        objectPath: 'log',
-        needsValue: false,
-    },
-    {
-        param: '--preprocessDefines',
-        alias: '-defs',
-        objectPath: 'preprocessOptions.defines',
-        needsValue: true,
-        canBeList: true,
-        commands: ['resolve', 'start'],
-    },
-    {
-        param: '--preprocessMode',
-        alias: '-mode',
-        objectPath: 'preprocessOptions.mode',
-        needsValue: true,
-        canBeList: true,
-        commands: ['resolve', 'start'],
-    },
-    {
-        param: '--config',
-        alias: '-c',
-        objectPath: 'config',
-        needsValue: true,
-        commands: ['resolve', 'start'],
-    },
-];
+// let paramDefinitions = [
+//     {
+//         param: '--dir',
+//         alias: '-d',
+//         objectPath: 'dir',
+//         needsValue: true,
+//         commands: ['resolve', 'start'],
+//     },
+//     {
+//         param: '--formats',
+//         alias: '-f',
+//         objectPath: 'formats',
+//         needsValue: true,
+//         canBeList: true,
+//         commands: ['resolve', 'start'],
+//     },
+//     {
+//         param: '--log',
+//         objectPath: 'log',
+//         needsValue: false,
+//     },
+//     {
+//         param: '--preprocessDefines',
+//         alias: '-defs',
+//         objectPath: 'preprocessOptions.defines',
+//         needsValue: true,
+//         canBeList: true,
+//         commands: ['resolve', 'start'],
+//     },
+//     {
+//         param: '--preprocessMode',
+//         alias: '-mode',
+//         objectPath: 'preprocessOptions.mode',
+//         needsValue: true,
+//         canBeList: true,
+//         commands: ['resolve', 'start'],
+//     },
+//     {
+//         param: '--config',
+//         alias: '-c',
+//         objectPath: 'config',
+//         needsValue: true,
+//         commands: ['resolve', 'start'],
+//     },
+// ];
 let processInstructions = parseArgs(paramDefinitions);
 
 if (processInstructions) {
@@ -66,7 +67,7 @@ if (processInstructions) {
                     .then().catch(err => console.error(err));
             } else {
 
-                LogError("prebuilder resolve command called without passing source dir.", false, true);
+                LogError("prebuild resolve command called without passing source dir.", false, true);
             }
             break;
 
@@ -85,10 +86,10 @@ if (processInstructions) {
                         .then().catch(err => console.error(err));
                 } else {
 
-                    LogError("prebuilder start command called without passing sub-command string first.", false, true);
+                    LogError("prebuild start command called without passing sub-command string first.", false, true);
                 }
             } else {
-                LogError("prebuilder start command called without passing source dir.", false, true);
+                LogError("prebuild start command called without passing source dir.", false, true);
             }
             break;
 
@@ -100,7 +101,7 @@ if (processInstructions) {
 
         }
         default:
-            LogError("prebuilder called without any command argument.", false, true);
+            LogError("prebuild called without any command argument.", false, true);
     }
 }
 
