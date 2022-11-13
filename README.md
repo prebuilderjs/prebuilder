@@ -8,7 +8,7 @@
     <a href="https://www.npmjs.com/package/prebuilder" alt="Npm version">
         <img src="https://img.shields.io/npm/v/prebuilder">
     </a>
-    <a href="https://packagephobia.com/result?p=prebuilder" alt="Licence">
+    <a href="https://packagephobia.com/result?p=prebuilder" alt="Size">
         <img src="https://packagephobia.com/badge?p=prebuilder">
     </a>
     <a href="https://github.com/prebuilderjs/prebuilder" alt="Licence">
@@ -114,8 +114,9 @@ prebuild --help
 
 ## Other packages
 Currently these packages are alongside this project:
-- [`@prebuilder/lib`](./Packages/lib) A preprocess utility usable in Node.js and/or in the browser
-- [`@prebuilder/rollup-plugin`](./Packages/rollup-plugin) A rollup plugin for an easier time
+- [`@prebuilder/lib`](https://github.com/prebuilderjs/lib) A preprocess utility usable in Node.js and/or in the browser
+- [`@prebuilder/rollup-plugin`](https://github.com/prebuilderjs/rollup-plugin) A rollup plugin for an easier time
+- [`@prebuilder/tsc`](https://github.com/prebuilderjs/tsc) A Prebuilder helper for an out of the box Typescript integration
 
 ## Use case example
 
