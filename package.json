@@ -1,6 +1,6 @@
 {
   "name": "prebuilder",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "A pre-processor that allows for C#-like directives in javascript & other text-based files",
   "main": "dist/index.js",
   "scripts": {

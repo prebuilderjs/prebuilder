@@ -49,40 +49,65 @@ npm i --save-dev prebuilder
 
 ## Commands
 
-### Resolve:
+<details>
+<summary>
+  <h3 style="display:inline-block">Resolve:</h3>
+  <span style="white-space: pre;">    (click)</span>
+</summary>
+
 Resolves directives in every script of a given source folder, and caches their original versions.
 ```sh
 prebuild resolve --dir "src"
 ```
 
+![](.screenshots/prebuild%20resolve.png)
+
 |       Parameters       |        Required       |   Needs value   |      Example                                                                                   |
 |    ---                 |          :---:        |      :---:      |        ---                                                                                     |
-| `--dir`                | Yes                   | Yes             | `prebuild resolve --dir "src/somefolder"`                                                      |
-| `--formats`            | No                    | Yes             | `prebuild resolve --formats ".js"`<br>`--formats ".js, .ts, .cpp"`                             |
-| `--log`                | No                    | No              |                                                                                                |
-| `--preprocessDefines`  | No                    | Yes             | `prebuild resolve --preprocessDefines "MY_DEF"`<br>`--preprocessDefines "DEFINE1, DEFINE2"`    |
-| `--preprocessMode`     | No                    | Yes             | `prebuild resolve --preprocessMode "both"`                                                     |
+| `--dir`                | ✔                   | ✔             | `prebuild resolve --dir "src/somefolder"`                                                      |
+| `--formats`            | ❌                    | ✔             | `prebuild resolve --formats ".js"`<br>`--formats ".js, .ts, .cpp"`                             |
+| `--log`                | ❌                    | No              |                                                                                                |
+| `--preprocessDefines`  | ❌                    | ✔             | `prebuild resolve --preprocessDefines "MY_DEF"`<br>`--preprocessDefines "DEFINE1, DEFINE2"`    |
+| `--preprocessMode`     | ❌                    | ✔             | `prebuild resolve --preprocessMode "both"`                                                     |
 
+</details>
 
-### Restore:
+<details>
+<summary>
+  <h3 style="display:inline-block">Restore:</h3>
+  <span style="white-space: pre;">    (click)</span>
+</summary>
+
 Restores back original scripts (with unresolved directives).
 ```sh
 prebuild restore
 ```
 
+![](.screenshots/prebuild%20restore.png)
+
 |       Parameters       |        Required       |   Needs value   |
 |    ---                 |          :---:        |      :---:      |
-| `--log`                | No                    | No              |
+| `--log`                | ❌                    | ❌              |
 
-### Wrap:
+</details>
+
+<details>
+<summary>
+  <h3 style="display:inline-block">Wrap:</h3>
+  <span style="white-space: pre;">    (click)</span>
+</summary>
+
 Resolves scripts, executes a given command then restores them back.<br> 
 This is useful to run bundlers and linters on resolved code, thus avoiding runtime errors.
 ```sh
 prebuild wrap "my command" --dir "src"
 ```
+
+![](.screenshots/prebuild%20wrap.png)
+
 |       Parameters       |        Required       |   Needs value   |      Example                                                                     |
 |    ---                 |          :---:        |      :---:      |        ---                                                                       |
-| first parameter        | Yes                   | Yes             | `prebuild wrap "npx run build"`                                                 |
+| first parameter        | ✔                   | ✔             | `prebuild wrap "npx run build"`                                                 |
 | all of "resolve" <br>command's parameters  |       |                 | `prebuild wrap "npx run build" --dir "src" --log`                               |
 
 
@@ -96,11 +121,20 @@ prebuild wrap "npx tsc" --dir "src"
 prebuild wrap "npx rollup -c rollup.config.mjs" --dir "src"
 ```
 
-### Help:
+</details>
+
+<details>
+<summary>
+  <h3 style="display:inline-block">Help:</h3>
+  <span style="white-space: pre;">    (click)</span>
+</summary>
+
 Prints command line info on this tool.
 ```sh
 prebuild --help
 ```
+
+</details>
 
 ## Parameter descriptions:
 |       Parameters                    |        Expected values          |        Descriptions                                                                                                    |
@@ -109,8 +143,8 @@ prebuild --help
 | `--dir`                             | path (string)                   | Source folder's relative path.                                                                                         |
 | `--log`                             |                                 | Enable debug logging.                                                                                                  |
 | `--formats`                         | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
-| `--preprocessDefines`               | define, or set of <br>defines separated <br>by a comma `,` (string)           | List of defines based on which to validate #if statements.               |
-| `--preprocessMode`                  | `"plain"\|"commented"\|"both"`  | Wether to preprocess directives written plainly `#if` or in a comment `//#if`. Default value is "both".                |
+| `--preprocessDefines`               | define, or set of <br>defines separated <br>by a comma `,` (string)           | List of defines based on which to validate <br>#if statements.               |
+| `--preprocessMode`                  | `"plain"` or<br>`"commented"` or<br>`"both"`  | Wether to preprocess directives written plainly `#if` or in a comment `//#if`. Default value is "both".                |
 
 ## Other packages
 Currently these packages are alongside this project:
@@ -219,6 +253,7 @@ class MyClass {
 
 ## Planned features
 - [x] use a config .json file
+- [ ] resolve files to a specific folder
 - [ ] add possibility to include / exclude files/folders
 - [ ] implement `#elseif` directive
 - [ ] implement `#put` directive
