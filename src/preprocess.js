@@ -157,7 +157,7 @@ export async function start(sourceDir, command, options) {
     try {
         await resolve(sourceDir, options);
     } catch (err) {
-        LogError("prebuild start error, resolution aborted:", false, false);
+        LogError("prebuild start error, preprocess resolution aborted:", false, false);
         throw err;
     }
 

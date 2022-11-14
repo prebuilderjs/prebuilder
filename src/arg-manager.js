@@ -31,12 +31,13 @@ export function parseArgs(paramDefs) {
     let result = { args: process.argv.slice(2) };
     
     // command
-    if (result.args.length > 0) {
+    if (!!result.args.length) {
         // check command slot is not a known parameter
         if (!paramDefs.some( prmDef => prmDef.param == result.args[0] || prmDef.alias == result.args[0])) {
             
             result.command = result.args[0];
-        }
+        } else
+            result.command = null;
     } else
         result.command = null;
     
