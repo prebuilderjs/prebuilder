@@ -74,26 +74,26 @@ prebuild restore
 |    ---                 |          :---:        |      :---:      |
 | `--log`                | No                    | No              |
 
-### Start:
+### Wrap:
 Resolves scripts, executes a given command then restores them back.<br> 
 This is useful to run bundlers and linters on resolved code, thus avoiding runtime errors.
 ```sh
-prebuild start "my command" --dir "src"
+prebuild wrap "my command" --dir "src"
 ```
 |       Parameters       |        Required       |   Needs value   |      Example                                                                     |
 |    ---                 |          :---:        |      :---:      |        ---                                                                       |
-| first parameter        | Yes                   | Yes             | `prebuild start "npx run build"`                                                 |
-| all of "resolve" <br>command's parameters  |       |                 | `prebuild start "npx run build" --dir "src" --log`                               |
+| first parameter        | Yes                   | Yes             | `prebuild wrap "npx run build"`                                                 |
+| all of "resolve" <br>command's parameters  |       |                 | `prebuild wrap "npx run build" --dir "src" --log`                               |
 
 
 ```sh
 # examples for bundling your app with resolved code:
 # - webpack
-prebuild start "npx webpack --config example.config.js" --dir "src"
+prebuild wrap "npx webpack --config example.config.js" --dir "src"
 # - typescript
-prebuild start "npx tsc" --dir "src"
+prebuild wrap "npx tsc" --dir "src"
 # - rollup
-prebuild start "npx rollup -c rollup.config.mjs" --dir "src"
+prebuild wrap "npx rollup -c rollup.config.mjs" --dir "src"
 ```
 
 ### Help:
@@ -105,7 +105,7 @@ prebuild --help
 ## Parameter descriptions:
 |       Parameters                    |        Expected values          |        Descriptions                                                                                                    |
 |    ---                              |            ---                  |            ---                                                                                                         |
-| start command's<br> first parameter |                                 |                                                                                                                        |
+| wrap command's<br> first parameter |                                 |                                                                                                                        |
 | `--dir`                             | path (string)                   | Source folder's relative path.                                                                                         |
 | `--log`                             |                                 | Enable debug logging.                                                                                                  |
 | `--formats`                         | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
@@ -230,12 +230,27 @@ class MyClass {
 
 ## Current limitations
 - commented mode requires no space between double slash and directive `//#if` not `// #if` (solution planned).
-- preduild start doesn't support running cli tools in watch mode.
+- `preduild wrap` doesn't support running cli tools in watch mode.
 
 ## Warnings ⚠️
 - When using resolve and restore manually, be sure to restore as soon as possible, thus avoiding to forget and modify resolved code that will be overwritten on restore, or commit resolved code instead of the original.
-- When executing npm commands with preduild start, be sure to use `npx` instead of `npm`, for more information read this [issue](https://stackoverflow.com/questions/9679932/how-to-use-executables-from-a-package-installed-locally-in-node-modules).
-- When executing npm commands with preduild start, avoid using commands that run continuously, such as bundlers in watch mode, source files will be restored (overwritten) only when command has finished!, this means that any change made to source code while command is running, will be lost!
+- When executing npm commands with `preduild wrap`, be sure to use `npx` instead of `npm`, for more information read this [issue](https://stackoverflow.com/questions/9679932/how-to-use-executables-from-a-package-installed-locally-in-node-modules).
+- When executing npm commands with `preduild wrap`, avoid using commands that run continuously, such as bundlers in watch mode, source files will be restored (overwritten) only when command has finished!, this means that any change made to source code while command is running, will be lost!
+
+<details>
+<summary>
+  <h2 style="display:inline-block">Changelog</h2>
+  <span style="white-space: pre;">    (click)</span>
+</summary>
+
+### v 1.1
+- Load configuration from file
+- bugfix: parseArgs returns null
+
+### v 1.2
+- Renamed `preduild start` command to `preduild wrap`
+
+</details>
 
 ## Licence
 

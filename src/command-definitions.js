@@ -5,7 +5,7 @@ export default [
         alias: '-d',
         objectPath: 'dir',
         needsValue: true,
-        commands: ['resolve', 'start'],
+        commands: ['resolve', 'wrap'],
     },
     {
         param: '--formats',
@@ -13,7 +13,7 @@ export default [
         objectPath: 'formats',
         needsValue: true,
         canBeList: true,
-        commands: ['resolve', 'start'],
+        commands: ['resolve', 'wrap'],
     },
     {
         param: '--log',
@@ -26,7 +26,7 @@ export default [
         objectPath: 'preprocessOptions.defines',
         needsValue: true,
         canBeList: true,
-        commands: ['resolve', 'start'],
+        commands: ['resolve', 'wrap'],
     },
     {
         param: '--preprocessMode',
@@ -34,13 +34,13 @@ export default [
         objectPath: 'preprocessOptions.mode',
         needsValue: true,
         canBeList: true,
-        commands: ['resolve', 'start'],
+        commands: ['resolve', 'wrap'],
     },
     {
         param: '--config',
         alias: '-c',
         objectPath: 'config',
         needsValue: true,
-        commands: ['resolve', 'start'],
+        commands: ['resolve', 'wrap'],
     },
 ];

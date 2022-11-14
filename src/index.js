@@ -1,4 +1,4 @@
-import { resolve, restore, start } from './preprocess.js';
+import { resolve, restore, wrap } from './preprocess.js';
 import { LogError, LogColor, LogWarn } from './logger';
 import { helpString } from './help';
 import { parseArgs } from './arg-manager';
@@ -30,20 +30,20 @@ if (processInstructions) {
             restore(options);
             break;
         }
-        case "start":{
+        case "wrap":{
 
             if (options.dir) {
                 // check first argument is not a known parameter (cmd string is required first)
                 if (!paramDefinitions.some( prmDef => prmDef.param == processInstructions.args[1]|| prmDef.alias == processInstructions.args[1])) {
                     
-                    start(options.dir, processInstructions.args[1], options)
+                    wrap(options.dir, processInstructions.args[1], options)
                         .then().catch(err => console.error(err));
                 } else {
 
-                    LogError("prebuild start command called without passing sub-command string first.", false, true);
+                    LogError("prebuild wrap command called without passing sub-command string first.", false, true);
                 }
             } else {
-                LogError("prebuild start command called without passing source dir.", false, true);
+                LogError("prebuild wrap command called without passing source dir.", false, true);
             }
             break;
 
@@ -67,4 +67,4 @@ if (processInstructions) {
 //     global.temp_folder = dir;
 // }
 
-export { resolve, restore, start }; //, changeTempDir };
+export { resolve, restore, wrap }; //, changeTempDir };

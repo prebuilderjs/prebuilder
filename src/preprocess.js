@@ -150,19 +150,19 @@ export function restore(options = {}) {
  *      Enable debug logging.
  * ```
  */
-export async function start(sourceDir, command, options) {
+export async function wrap(sourceDir, command, options) {
     
 
     // Resolve
     try {
         await resolve(sourceDir, options);
     } catch (err) {
-        LogError("prebuild start error, preprocess resolution aborted:", false, false);
+        LogError("prebuild wrap error, preprocess resolution aborted:", false, false);
         throw err;
     }
 
     // Exec command
-    LogCond("--- Command start", options.log);
+    LogCond("--- Command wrap", options.log);
     try {
         execSync(command, (err, stdout, stdrr) => {
             console.log(stdout);
@@ -171,7 +171,7 @@ export async function start(sourceDir, command, options) {
             if (stdrr) throw stdrr;
         });
     } catch (err) {
-        LogError("prebuilder start sub-command error:\n" + err, false, false);
+        LogError("prebuilder wrap sub-command error:\n" + err, false, false);
     }
     LogCond("--- Command end", options.log);
 
@@ -179,7 +179,7 @@ export async function start(sourceDir, command, options) {
     try {
         restore(options);
     } catch (err) {
-        LogError("prebuild start error, could not restore files after resolution:", false, false);
+        LogError("prebuild wrap error, could not restore files after resolution:", false, false);
         throw err;
     }
 }

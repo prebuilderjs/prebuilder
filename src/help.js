@@ -28,7 +28,7 @@ resolve  | --dir     (required)  |  Resolves directives in every script of a
 restore  | --log                 |  Restores back original scripts (with 
          |                       |  unresolved directives).
 ╼╼╼╼╼╼╼╼╼┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼
-start    | "command" (required)  |  Resolves scripts, executes a given command
+wrap     | "command" (required)  |  Resolves scripts, executes a given command
          | --dir     (required)  |  then restores them back.
          | --formats             |
          | --log                 |
