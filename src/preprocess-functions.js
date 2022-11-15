@@ -17,7 +17,9 @@ export function resolveScripts(db, sourceDir, options) {
         LogCond("total files: " + files.length, options.log);
 
         let cFiles;
-        if (db.lastSourceDir == sourceDir) {
+        // srcDir unchanged while not in out mode  OR  srcDir and outDir both unchanged
+        if (db.lastSourceDir == sourceDir &&
+            (!options.outDir || db.lastOutDir == options.outDir)) {
             // get classified files list
             // knowing which files have been deleted allows to remove them from database & cache
             // knowing which files have been modified allows to avoid useless checks
@@ -92,57 +94,15 @@ export function resolveScripts(db, sourceDir, options) {
                 changed: cFiles.changed.length,
                 unchanged: cFiles.unchanged.length} });
         }
-            
-        for (let i = 0; i < filesToProcess.length; i++) {
-            
-            // check if preprocess directives are used in modded file, cache result
-            var file = fs.readFileSync(filesToProcess[i].path, 'utf-8');
-            let fileSize = file.length;
+        
+        // resolve
+        !!options.outDir ? resolveIntoOutDir(filesToProcess, options, db) : resolveIntoSrcDir(filesToProcess, options);
 
-            // preprocess
-            LogCond("\npreprocessing file " + i + ": ", options.log);
-            if (options.log) options.preprocessOptions.fileAdress = path.parse(filesToProcess[i].path).base;
-            file = preprocess(file, options.preprocessOptions);
-
-            // in case of any change
-            if (fileSize != file.length) {
-
-                // IDEA_3
-                // if script already cached without having restored
-                // if (filesToProcess[i].cached == true) {
-
-                //     // Add new source scripts diff to cached script
-
-                //     // --------
-
-                // } else {
-                    
-                    // move source file to .temp folder
-                    LogCond("caching file " + path.parse(filesToProcess[i].path).base + " ...", options.log);
-                    cacheFile(filesToProcess[i].path);
-                // }
-
-
-                // save preprocessed file in source path
-                fs.writeFileSync(filesToProcess[i].path, file, 'utf-8', (err) => {
-                    if (err)
-                        LogError("couldn't resolve file " + filesToProcess[i].path + "\n" + err, true, true);
-                });
-
-                // update cached flag
-                filesToProcess[i].cached = true;
-            } else {
-                filesToProcess[i].cached = false;
-            }
-
-            // update date flag
-            filesToProcess[i].date = fs.statSync(filesToProcess[i].path).mtime;
-        }
-
-        // Update db flag
+        // Update db flags
         db.fileList = filesToProcess.concat(cFiles.unchanged);
-        db.restored = false;
+        if (!options.outDir) db.restored = false;
         db.lastSourceDir = sourceDir;
+        if (!!options.outDir) db.lastOutDir = options.outDir;
 
         return {
             success: true,
@@ -155,6 +115,96 @@ export function resolveScripts(db, sourceDir, options) {
             error: err,
             db: db
         };
+    }
+}
+
+function resolveIntoSrcDir(filesToProcess, options) {
+
+    for (let i = 0; i < filesToProcess.length; i++) {
+            
+        // check if preprocess directives are used in modded file, cache result
+        var file = fs.readFileSync(filesToProcess[i].path, 'utf-8');
+        let fileSize = file.length;
+
+        // preprocess
+        LogCond("\npreprocessing file " + i + ": ", options.log);
+        if (options.log) options.preprocessOptions.fileAdress = path.parse(filesToProcess[i].path).base;
+        file = preprocess(file, options.preprocessOptions);
+
+        // in case of any change
+        if (fileSize != file.length) {
+
+            // IDEA_3
+            // if script already cached without having restored
+            // if (filesToProcess[i].cached == true) {
+
+            //     // Add new source scripts diff to cached script
+
+            //     // --------
+
+            // } else {
+                
+                // move source file to .temp folder
+                LogCond("caching file " + path.parse(filesToProcess[i].path).base + " ...", options.log);
+                cacheFile(filesToProcess[i].path);
+            // }
+
+
+            // save preprocessed file in source path
+            fs.writeFileSync(filesToProcess[i].path, file, 'utf-8', (err) => {
+                if (err)
+                    LogError("couldn't resolve file " + filesToProcess[i].path + "\n" + err, true, true);
+            });
+
+            // update cached flag
+            filesToProcess[i].cached = true;
+        } else {
+            filesToProcess[i].cached = false;
+        }
+
+        // update date flag
+        filesToProcess[i].date = fs.statSync(filesToProcess[i].path).mtime;
+    }
+}
+
+function resolveIntoOutDir(filesToProcess, options, db) {// db read-only
+    for (let i = 0; i < filesToProcess.length; i++) {
+            
+        // check if preprocess directives are used in modded file, cache result
+        var file = fs.readFileSync(filesToProcess[i].path, 'utf-8');
+        let fileSize = file.length;
+
+        // preprocess
+        LogCond("\npreprocessing file " + i + ": ", options.log);
+        if (options.log) options.preprocessOptions.fileAdress = path.parse(filesToProcess[i].path).base;
+        file = preprocess(file, options.preprocessOptions);
+
+        // treat file: in case of any change, or when in out mode & given a new outDir
+        if (fileSize != file.length ||
+            !!options.outDir && db.lastOutDir != options.outDir) {
+
+            let filePath = path.resolve(options.outDir, filesToProcess[i].path);
+
+            // create out directory if inexistent
+            LogColor(options.outDir, 'magenta')
+            if (!fs.existsSync( path.parse(filePath).dir )) {
+                fs.mkdirSync( path.parse(filePath).dir , { recursive: true });
+            }
+
+            // save preprocessed file in source path
+            fs.writeFileSync(filePath, file, 'utf-8', (err) => {
+                if (err)
+                    LogError("couldn't resolve file " + filesToProcess[i].path + "\n" + err, true, true);
+            });
+
+            // update cached flag
+            filesToProcess[i].cached = true;
+        } else {
+            filesToProcess[i].cached = false;
+        }
+
+        // update date flag
+        filesToProcess[i].date = fs.statSync(filesToProcess[i].path).mtime;
     }
 }
 

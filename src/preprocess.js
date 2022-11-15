@@ -176,11 +176,13 @@ export async function wrap(sourceDir, command, options) {
     LogCond("--- Command end", options.log);
 
     // Restore
-    try {
-        restore(options);
-    } catch (err) {
-        LogError("prebuild wrap error, could not restore files after resolution:", false, false);
-        throw err;
+    if (!options.outDir) {
+        try {
+            restore(options);
+        } catch (err) {
+            LogError("prebuild wrap error, could not restore files after resolution:", false, false);
+            throw err;
+        }
     }
 }
 

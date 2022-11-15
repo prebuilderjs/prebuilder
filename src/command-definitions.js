@@ -8,6 +8,13 @@ export default [
         commands: ['resolve', 'wrap'],
     },
     {
+        param: '--outDir',
+        alias: '-od',
+        objectPath: 'outDir',
+        needsValue: true,
+        commands: ['resolve', 'wrap'],
+    },
+    {
         param: '--formats',
         alias: '-f',
         objectPath: 'formats',

@@ -247,7 +247,8 @@ class MyClass {
 
 ## Planned features
 - [x] use a config .json file
-- [ ] resolve files to a specific folder
+- [x] resolve files to a specific folder
+- [ ] add watch mode when prebuilding in out folder
 - [ ] add possibility to include / exclude files/folders
 - [ ] implement `#elseif` directive
 - [ ] implement `#put` directive
@@ -255,6 +256,7 @@ class MyClass {
 - [ ] support html comments (for comment mode)
 - [ ] support css comments (for comment mode)
 - [ ] allow to have `#else` / `#endif` in same line as `#if`
+- [ ] prebuild multiple sources concurrently
 - [ ] directive extensibility
 
 ## Current limitations
@@ -283,6 +285,7 @@ Currently these packages are alongside this project:
 - bugfix: parseArgs returns null
 
 ### v 1.2
+- Added possibility to resolve files to a specific folder
 - Renamed `preduild start` command to `preduild wrap`
 - Renamed `--dir` command to `--srcDir`
 
