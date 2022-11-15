@@ -21,7 +21,7 @@ if (processInstructions) {
                     .then().catch(err => console.error(err));
             } else {
 
-                LogError("prebuild resolve command called without passing source dir.", false, true);
+                LogError("prebuild error: No source directory has been set, check configuration file or add --scrDir parameter.", false, true);
             }
             break;
 
@@ -40,10 +40,10 @@ if (processInstructions) {
                         .then().catch(err => console.error(err));
                 } else {
 
-                    LogError("prebuild wrap command called without passing sub-command string first.", false, true);
+                    LogError("prebuild error: wrap command called without passing sub-command string first.", false, true);
                 }
             } else {
-                LogError("prebuild wrap command called without passing source dir.", false, true);
+                LogError("prebuild error: No source directory has been set, check configuration file or add --scrDir parameter.", false, true);
             }
             break;
 
@@ -59,12 +59,4 @@ if (processInstructions) {
     }
 }
 
-// /**
-//  * Restore before changing temp folder !
-//  * @param {*} dir 
-//  */
-// function changeTempDir(dir) {
-//     global.temp_folder = dir;
-// }
-
-export { resolve, restore, wrap }; //, changeTempDir };
+export { resolve, restore, wrap };

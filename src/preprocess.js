@@ -157,7 +157,7 @@ export async function wrap(sourceDir, command, options) {
     try {
         await resolve(sourceDir, options);
     } catch (err) {
-        LogError("prebuild wrap error, preprocess resolution aborted:", false, false);
+        LogError("prebuild wrap error: preprocess resolution aborted\n", false, false);
         throw err;
     }
 
@@ -171,7 +171,7 @@ export async function wrap(sourceDir, command, options) {
             if (stdrr) throw stdrr;
         });
     } catch (err) {
-        LogError("prebuilder wrap sub-command error:\n" + err, false, false);
+        LogError("prebuild wrap error: sub-command run with error:\n" + err, false, false);
     }
     LogCond("--- Command end", options.log);
 
@@ -180,7 +180,7 @@ export async function wrap(sourceDir, command, options) {
         try {
             restore(options);
         } catch (err) {
-            LogError("prebuild wrap error, could not restore files after resolution:", false, false);
+            LogError("prebuild wrap error: could not restore files\n", false, false);
             throw err;
         }
     }
