@@ -2,14 +2,14 @@
 export default [
     {
         param: '--srcDir',
-        alias: '-d',
+        alias: '-s',
         objectPath: 'srcDir',
         needsValue: true,
         commands: ['resolve', 'wrap'],
     },
     {
         param: '--outDir',
-        alias: '-od',
+        alias: '-o',
         objectPath: 'outDir',
         needsValue: true,
         commands: ['resolve', 'wrap'],
@@ -30,12 +30,12 @@ export default [
     },
     {
         param: '--log',
+        alias: '-l',
         objectPath: 'log',
         needsValue: false,
     },
     {
         param: '--preprocessDefines',
-        alias: '-defs',
         objectPath: 'preprocessOptions.defines',
         needsValue: true,
         canBeList: true,
@@ -43,7 +43,6 @@ export default [
     },
     {
         param: '--preprocessMode',
-        alias: '-mode',
         objectPath: 'preprocessOptions.mode',
         needsValue: true,
         canBeList: true,

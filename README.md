@@ -18,7 +18,7 @@
 </p>
 
 <p style="text-align:center" align="center">
-A pre-processor that allows for C#-like directives for <span style="color: #a59b28; font-weight:bold">Javascript</span>, <span style="color: #126f9b; font-weight:bold">Typescript</span>, <span style="color: #b3690f; font-weight:bold">Rust</span>, <span style="color: #969762; font-weight:bold">Python</span> & any other text-based file!
+A pre-processor that brings C#-like directives to <span style="color: #a59b28; font-weight:bold">Javascript</span>, <span style="color: #126f9b; font-weight:bold">Typescript</span>, <span style="color: #b3690f; font-weight:bold">Rust</span>, <span style="color: #969762; font-weight:bold">Python</span> & any other text-based file!
 </p>
 
 ## Motivation
@@ -62,13 +62,16 @@ prebuild resolve --srcDir "src"
 
 ![](.screenshots/prebuild%20resolve.png)
 
-|       Parameters       |        Required       |   Needs value   |      Example                                                                                   |
-|    ---                 |          :---:        |      :---:      |        ---                                                                                     |
-| `--srcDir`                | ✔                   | ✔             | `prebuild resolve --srcDir "src/somefolder"`                                                      |
-| `--formats`            | ❌                    | ✔             | `prebuild resolve --formats ".js"`<br>`--formats ".js, .ts, .cpp"`                             |
-| `--log`                | ❌                    | No              |                                                                                                |
-| `--preprocessDefines`  | ❌                    | ✔             | `prebuild resolve --preprocessDefines "MY_DEF"`<br>`--preprocessDefines "DEFINE1, DEFINE2"`    |
-| `--preprocessMode`     | ❌                    | ✔             | `prebuild resolve --preprocessMode "both"`                                                     |
+|       Parameters      |        Required       |  Needs value  |      Examples                                                                                |
+|    ---                |          :---:        |     :---:     |        ---                                                                                   |
+| `--srcDir`            | ✔                     | ✔            | `prebuild resolve --srcDir "src/somefolder"`                                                 |
+| `--outDir`            | ✔ (unless <br>`--onTheSpot` is used) | ❌             | `prebuild resolve --outDir "output"`                                        |
+| `--formats`           | ❌                    | ✔            | `prebuild resolve --formats ".js"`<br>`--formats ".js, .ts, .cpp"`                           |
+| `--onTheSpot`         | ❌                    | ❌           |                                                                                              |
+| `--log`               | ❌                    | ❌           |                                                                                              |
+| `--preprocessDefines` | ❌                    | ✔            | `prebuild resolve --preprocessDefines "MY_DEF"`<br>`--preprocessDefines "DEFINE1, DEFINE2"`  |
+| `--preprocessMode`    | ❌                    | ✔            | `prebuild resolve --preprocessMode "both"`                                                   |
+| `--config`            | ❌                    | ✔            | `prebuild resolve --config "myprebulder.config.js"`                                          |
 
 </details>
 
@@ -85,9 +88,9 @@ prebuild restore
 
 ![](.screenshots/prebuild%20restore.png)
 
-|       Parameters       |        Required       |   Needs value   |
-|    ---                 |          :---:        |      :---:      |
-| `--log`                | ❌                    | ❌              |
+|       Parameters       |     Required     |   Needs value   |
+|    ---                 |       :---:      |      :---:      |
+| `--log`                | ❌              | ❌              |
 
 </details>
 
@@ -105,10 +108,10 @@ prebuild wrap "my command" --srcDir "src"
 
 ![](.screenshots/prebuild%20wrap.png)
 
-|       Parameters       |        Required       |   Needs value   |      Example                                                                     |
-|    ---                 |          :---:        |      :---:      |        ---                                                                       |
-| first parameter        | ✔                   | ✔             | `prebuild wrap "npx run build"`                                                 |
-| all of "resolve" <br>command's parameters  |       |                 | `prebuild wrap "npx run build" --srcDir "src" --log`                               |
+|       Parameters       |        Required      |  Needs value  |      Examples                                        |
+|    ---                 |          :---:       |     :---:     |        ---                                           |
+| first parameter        | ✔                    | ✔            | `prebuild wrap "npx run build"`                      |
+| all of "resolve" <br>command's parameters  |  |               | `prebuild wrap "npx run build" --srcDir "src" --log` |
 
 
 ```sh
@@ -137,14 +140,17 @@ prebuild --help
 </details>
 
 ## Parameter descriptions:
-|       Parameters                    |        Expected values          |        Descriptions                                                                                                    |
-|    ---                              |            ---                  |            ---                                                                                                         |
-| wrap command's<br> first parameter |                                 |                                                                                                                        |
-| `--srcDir`                             | path (string)                   | Source folder's relative path.                                                                                         |
-| `--log`                             |                                 | Enable debug logging.                                                                                                  |
-| `--formats`                         | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
-| `--preprocessDefines`               | define, or set of <br>defines separated <br>by a comma `,` (string)           | List of defines based on which to validate <br>#if statements.               |
-| `--preprocessMode`                  | `"plain"` or<br>`"commented"` or<br>`"both"`  | Wether to preprocess directives written plainly `#if` or in a comment `//#if`. Default value is "both".                |
+|       Parameters              | alias |        Expected values          |        Descriptions                                                                                                    |
+|    ---                        |       |            ---                  |            ---                                                                                                         |
+| wrap command's<br> first parameeter | |                                 | A non-persistent cli command                                                                                           |
+| `--srcDir`                    | `-s`  | path (string)                   | Source folder's path.                                                                                                  |
+| `--outDir`                    | `-o`  | path (string)                   | Output folder's path.                                                                                                  |
+| `--log`                       | `-l`  |                                 | Enable debug logging.                                                                                                  |
+| `--formats`                   | `-f`  | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
+| `--onTheSpot`                 |       |                                 | Resolve scripts keeping them in their source folder                                                                    |
+| `--preprocessDefines`         |       | define, or set of <br>defines separated <br>by a comma `,` (string)           | List of defines based on which to validate <br>#if statements.           |
+| `--preprocessMode`            |       | `"plain"` or<br>`"commented"` or<br>`"both"`  | Wether to preprocess directives written plainly `#if` or in a comment `//#if`. Default value is "both".  |
+| `--config`                    | `-c`  | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
 
 ## Use case examples
 
@@ -289,6 +295,8 @@ Currently these packages are alongside this project:
 - Renamed `preduild start` command to `preduild wrap`
 - Renamed `--dir` command to `--srcDir`
 - Hide temp folder on windows
+- resolve files to a specific folder as default with --outDir
+- resolution in same folder as source with --onTheSpot parameter
 
 </details>
 
