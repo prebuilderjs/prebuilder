@@ -104,8 +104,6 @@ export function resolveScripts(db, options) {
                 added: cFiles.added.length,
                 changed: cFiles.changed.length,
                 unchanged: cFiles.unchanged.length} }, options.log, 'table');
-        
-        // resolve
         options.onTheSpot ? resolveIntoSrcDir(filesToProcess, options) : resolveIntoOutDir(filesToProcess, options, db);
 
         // Update db flags
@@ -209,6 +207,7 @@ function resolveIntoOutDir(filesToProcess, options, db) {// db read-only
         }
 
         // update date flag
+        filesToProcess[i].cached = undefined;
         filesToProcess[i].date = fs.statSync(filesToProcess[i].path).mtime;
     }
 }
