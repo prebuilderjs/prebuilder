@@ -146,16 +146,10 @@ prebuild --help
 | `--preprocessDefines`               | define, or set of <br>defines separated <br>by a comma `,` (string)           | List of defines based on which to validate <br>#if statements.               |
 | `--preprocessMode`                  | `"plain"` or<br>`"commented"` or<br>`"both"`  | Wether to preprocess directives written plainly `#if` or in a comment `//#if`. Default value is "both".                |
 
-## Other packages
-Currently these packages are alongside this project:
-- [`@prebuilder/lib`](https://github.com/prebuilderjs/lib) A preprocess utility usable in Node.js and/or in the browser
-- [`@prebuilder/rollup-plugin`](https://github.com/prebuilderjs/rollup-plugin) A rollup plugin for an easier time
-- [`@prebuilder/tsc`](https://github.com/prebuilderjs/tsc) A Prebuilder helper for an out of the box Typescript integration
-
-## Use case example
+## Use case examples
 
 ```sh
-prebuild resolve --dir "src" --preprocessDefines "MY_DIRECTIVE, TARGET_BROWSER, ANDROID"
+prebuild resolve --dir "src" --preprocessDefines "TARGET_BROWSER, ANDROID"
 ```
 
 source code :
@@ -271,6 +265,12 @@ class MyClass {
 - When using resolve and restore manually, be sure to restore as soon as possible, thus avoiding to forget and modify resolved code that will be overwritten on restore, or commit resolved code instead of the original.
 - When executing npm commands with `preduild wrap`, be sure to use `npx` instead of `npm`, for more information read this [issue](https://stackoverflow.com/questions/9679932/how-to-use-executables-from-a-package-installed-locally-in-node-modules).
 - When executing npm commands with `preduild wrap`, avoid using commands that run continuously, such as bundlers in watch mode, source files will be restored (overwritten) only when command has finished!, this means that any change made to source code while command is running, will be lost!
+
+## Other packages
+Currently these packages are alongside this project:
+- [`@prebuilder/lib`](https://github.com/prebuilderjs/lib) A preprocess utility usable in Node.js and/or in the browser
+- [`@prebuilder/rollup-plugin`](https://github.com/prebuilderjs/rollup-plugin) A rollup plugin for an easier time
+- [`@prebuilder/tsc`](https://github.com/prebuilderjs/tsc) A Prebuilder helper for an out of the box Typescript integration
 
 <details>
 <summary>
