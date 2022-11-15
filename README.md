@@ -57,14 +57,14 @@ npm i --save-dev prebuilder
 
 Resolves directives in every script of a given source folder, and caches their original versions.
 ```sh
-prebuild resolve --dir "src"
+prebuild resolve --srcDir "src"
 ```
 
 ![](.screenshots/prebuild%20resolve.png)
 
 |       Parameters       |        Required       |   Needs value   |      Example                                                                                   |
 |    ---                 |          :---:        |      :---:      |        ---                                                                                     |
-| `--dir`                | ✔                   | ✔             | `prebuild resolve --dir "src/somefolder"`                                                      |
+| `--srcDir`                | ✔                   | ✔             | `prebuild resolve --srcDir "src/somefolder"`                                                      |
 | `--formats`            | ❌                    | ✔             | `prebuild resolve --formats ".js"`<br>`--formats ".js, .ts, .cpp"`                             |
 | `--log`                | ❌                    | No              |                                                                                                |
 | `--preprocessDefines`  | ❌                    | ✔             | `prebuild resolve --preprocessDefines "MY_DEF"`<br>`--preprocessDefines "DEFINE1, DEFINE2"`    |
@@ -100,7 +100,7 @@ prebuild restore
 Resolves scripts, executes a given command then restores them back.<br> 
 This is useful to run bundlers and linters on resolved code, thus avoiding runtime errors.
 ```sh
-prebuild wrap "my command" --dir "src"
+prebuild wrap "my command" --srcDir "src"
 ```
 
 ![](.screenshots/prebuild%20wrap.png)
@@ -108,17 +108,17 @@ prebuild wrap "my command" --dir "src"
 |       Parameters       |        Required       |   Needs value   |      Example                                                                     |
 |    ---                 |          :---:        |      :---:      |        ---                                                                       |
 | first parameter        | ✔                   | ✔             | `prebuild wrap "npx run build"`                                                 |
-| all of "resolve" <br>command's parameters  |       |                 | `prebuild wrap "npx run build" --dir "src" --log`                               |
+| all of "resolve" <br>command's parameters  |       |                 | `prebuild wrap "npx run build" --srcDir "src" --log`                               |
 
 
 ```sh
 # examples for bundling your app with resolved code:
 # - webpack
-prebuild wrap "npx webpack --config example.config.js" --dir "src"
+prebuild wrap "npx webpack --config example.config.js" --srcDir "src"
 # - typescript
-prebuild wrap "npx tsc" --dir "src"
+prebuild wrap "npx tsc" --srcDir "src"
 # - rollup
-prebuild wrap "npx rollup -c rollup.config.mjs" --dir "src"
+prebuild wrap "npx rollup -c rollup.config.mjs" --srcDir "src"
 ```
 
 </details>
@@ -140,7 +140,7 @@ prebuild --help
 |       Parameters                    |        Expected values          |        Descriptions                                                                                                    |
 |    ---                              |            ---                  |            ---                                                                                                         |
 | wrap command's<br> first parameter |                                 |                                                                                                                        |
-| `--dir`                             | path (string)                   | Source folder's relative path.                                                                                         |
+| `--srcDir`                             | path (string)                   | Source folder's relative path.                                                                                         |
 | `--log`                             |                                 | Enable debug logging.                                                                                                  |
 | `--formats`                         | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
 | `--preprocessDefines`               | define, or set of <br>defines separated <br>by a comma `,` (string)           | List of defines based on which to validate <br>#if statements.               |
@@ -149,7 +149,7 @@ prebuild --help
 ## Use case examples
 
 ```sh
-prebuild resolve --dir "src" --preprocessDefines "TARGET_BROWSER, ANDROID"
+prebuild resolve --srcDir "src" --preprocessDefines "TARGET_BROWSER, ANDROID"
 ```
 
 source code :
@@ -284,6 +284,7 @@ Currently these packages are alongside this project:
 
 ### v 1.2
 - Renamed `preduild start` command to `preduild wrap`
+- Renamed `--dir` command to `--srcDir`
 
 </details>
 

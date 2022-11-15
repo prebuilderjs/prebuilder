@@ -1,6 +1,6 @@
 
 module.exports = {
-    dir: 'test/src',
+    srcDir: 'test/src',
     log: true,
     preprocessOptions: {
         defines: [

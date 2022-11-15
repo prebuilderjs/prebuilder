@@ -18,27 +18,27 @@ _____
 
 Commands:
 
- command |      parameters       |               description
-╼╼╼╼╼╼╼╼╼┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼
-resolve  | --dir     (required)  |  Resolves directives in every script of a 
-         | --formats             |  given source folder, and caches their
-         | --log                 |  original versions.
-         | --preprocessDefines   |  
-╼╼╼╼╼╼╼╼╼┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼
-restore  | --log                 |  Restores back original scripts (with 
-         |                       |  unresolved directives).
-╼╼╼╼╼╼╼╼╼┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼
-wrap     | "command" (required)  |  Resolves scripts, executes a given command
-         | --dir     (required)  |  then restores them back.
-         | --formats             |
-         | --log                 |
-         | --preprocessDefines   |
+ command |      parameters        |               description
+╼╼╼╼╼╼╼╼╼┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼ ┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼
+resolve  | --srcDir     (required)  |  Resolves directives in every script of a 
+         | --formats              |  given source folder, and caches their
+         | --log                  |  original versions.
+         | --preprocessDefines    |  
+╼╼╼╼╼╼╼╼╼┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼ ┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼
+restore  | --log                  |  Restores back original scripts (with 
+         |                        |  unresolved directives).
+╼╼╼╼╼╼╼╼╼┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼ ┼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼╼
+wrap     | "command" (required)   |  Resolves scripts, executes a given command
+         | --srcDir     (required)|  then restores them back.
+         | --formats              |
+         | --log                  |
+         | --preprocessDefines    |
 
 
 Arguments:
 
---dir                 Path to the source folder
-                        ex: --dir "src"
+--srcDir                 Path to the source folder
+                        ex: --srcDir "src"
 
 --formats             List of file extentions for source files
                         default: ".js, .ts"

@@ -1,9 +1,9 @@
 
 export default [
     {
-        param: '--dir',
+        param: '--srcDir',
         alias: '-d',
-        objectPath: 'dir',
+        objectPath: 'srcDir',
         needsValue: true,
         commands: ['resolve', 'wrap'],
     },

@@ -15,9 +15,9 @@ if (processInstructions) {
     switch (processInstructions.command) {
         case "resolve":{
 
-            if (options.dir) {
+            if (options.srcDir) {
             
-                resolve(options.dir, options)
+                resolve(options.srcDir, options)
                     .then().catch(err => console.error(err));
             } else {
 
@@ -32,11 +32,11 @@ if (processInstructions) {
         }
         case "wrap":{
 
-            if (options.dir) {
+            if (options.srcDir) {
                 // check first argument is not a known parameter (cmd string is required first)
                 if (!paramDefinitions.some( prmDef => prmDef.param == processInstructions.args[1]|| prmDef.alias == processInstructions.args[1])) {
                     
-                    wrap(options.dir, processInstructions.args[1], options)
+                    wrap(options.srcDir, processInstructions.args[1], options)
                         .then().catch(err => console.error(err));
                 } else {
 
