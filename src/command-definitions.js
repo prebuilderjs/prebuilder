@@ -15,6 +15,12 @@ export default [
         commands: ['resolve', 'wrap'],
     },
     {
+        param: '--onTheSpot',
+        objectPath: 'onTheSpot',
+        needsValue: false,
+        commands: ['resolve', 'wrap'],
+    },
+    {
         param: '--formats',
         alias: '-f',
         objectPath: 'formats',

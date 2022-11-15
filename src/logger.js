@@ -78,13 +78,33 @@ export function LogColor(text, color, background = false, condition = true) {
 
 /**
  * 
- * @param {string} text Text to log
- * @param {boolean} condition Wether to log or not (default = true)
+ * @param {string} message Text or object to log.
+ * @param {boolean} condition Wether to log or not (default = true).
+ * @param {boolean} logType console. log / warn / error / table.
  */
-export function LogCond(text, condition = true) {
+export function LogCond(message, condition = true, logType = 'log') {
     
     if (condition) {
-        
-        console.log(text);
+
+        switch (logType) {
+            case 'log': {
+                console.log(message);
+                break;
+            }
+            case 'warn': {
+                console.warn(message);
+                break;
+            }
+            case 'error': {
+                console.error(message);
+                break;
+            }
+            case 'table': {
+                console.table(message);
+                break;
+            }
+            default:
+                break;
+        }
     }
 }

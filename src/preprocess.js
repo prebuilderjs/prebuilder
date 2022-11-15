@@ -7,7 +7,6 @@ import { resolveScripts, restoreScripts } from './preprocess-functions';
 
 /**
  * Resolves directives in every script of a given source folder, and caches their original versions.
- * @param {string} sourceDir Source folder's relative path
  * @param {object} options 
  * ```txt
  * formats: Array<string>   (default: ['.js', '.ts'])
@@ -22,12 +21,18 @@ import { resolveScripts, restoreScripts } from './preprocess-functions';
  *      Enable debug logging.
  * ```
  */
-export async function resolve(sourceDir, options = { formats: ['.js', '.ts'], preprocessOptions: {}, log: false}) {
+export async function resolve(options = { formats: ['.js', '.ts'], preprocessOptions: {}, log: false}) {
     
     // Check options
-    // options.formats = options.formats != '*' && options.formats != [] ? ['.js', '.ts'] : [];
     if (!(typeof options === 'object' && !Array.isArray(options) && options != null)) {
         LogError("invalid options parameter value.", true, true);
+
+    if (!options.srcDir) {
+        LogError("prebuild error: No source directory has been set, check configuration file or add --scrDir parameter.", false, true);
+        
+    } else if (!options.onTheSpot && !options.outDir) {
+        LogError("prebuild error: No output directory has been set, check configuration file or add --outDir parameter.", false, true);
+    }
 
     } else if (!options.formats) {
         options.formats = ['.js', '.ts'];
@@ -95,13 +100,14 @@ export async function resolve(sourceDir, options = { formats: ['.js', '.ts'], pr
     }
 
     // try resolve
-    let processResult = resolveScripts(db, sourceDir, options);
-    if (!processResult.success) {
+    let processResult = resolveScripts(db, options);
+    // auto-restore on error
+    if (!processResult.success && options.onTheSpot) {
         restoreScripts(processResult.db, options);
-        throw processResult.error;
+        throw processResult.error;// throw to stop exec when called in wrap()
     }
 
-    Save(db);
+    Save(processResult.db);
 
     LogCond("\n", options.log);
 }
@@ -134,7 +140,6 @@ export function restore(options = {}) {
  * 
  * Avoid using commands that run continuously, source files will be restored (overwritten) only when command has finished!, this means that
  * any change made to source code while command is running, will be lost!
- * @param {string} sourceDir Source folder's relative path
  * @param {string} command terminal comand to run (on preprocessed code).
  * @param {object} options 
  * ```txt
@@ -150,12 +155,11 @@ export function restore(options = {}) {
  *      Enable debug logging.
  * ```
  */
-export async function wrap(sourceDir, command, options) {
+export async function wrap(command, options) {
     
-
     // Resolve
     try {
-        await resolve(sourceDir, options);
+        await resolve(options);
     } catch (err) {
         LogError("prebuild wrap error: preprocess resolution aborted\n", false, false);
         throw err;
@@ -176,7 +180,7 @@ export async function wrap(sourceDir, command, options) {
     LogCond("--- Command end", options.log);
 
     // Restore
-    if (!options.outDir) {
+    if (options.onTheSpot) {
         try {
             restore(options);
         } catch (err) {

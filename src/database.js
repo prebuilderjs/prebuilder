@@ -5,20 +5,31 @@ import { LogError, LogColor, LogWarn } from './logger';
 
 
 export function Load() {
+
+    var db;
     
     if (fs.existsSync(path.join(temp_folder, 'prebuilder-db.json'))) {
         
         // return existing db object
-        var db = fs.readFileSync(path.join(temp_folder, 'prebuilder-db.json'), 'utf-8');
-        return JSON.parse(db);
+        db = fs.readFileSync(path.join(temp_folder, 'prebuilder-db.json'), 'utf-8');
+        db = JSON.parse(db);
 
     } else {
 
         // return new db object
-        var db = defaultDB();
+        db = defaultDB();
         Save(db, temp_folder);
-        return db
     }
+
+    // db.Empty = () => { db.fileList = []; };
+
+    Object.defineProperty( db, 'Empty', {
+        value: function () { this.fileList = []; },
+        writable: true,
+        configurable: true
+    });
+
+    return db;
 }
 
 

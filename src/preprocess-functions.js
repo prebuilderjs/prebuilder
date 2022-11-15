@@ -7,19 +7,41 @@ import { LogError, LogColor, LogWarn, LogCond } from './logger';
 
 
 
-export function resolveScripts(db, sourceDir, options) {
+export function resolveScripts(db, options) {
     try {
-        LogCond("source dir: " + sourceDir, options.log);
+        LogCond("source dir: " + options.srcDir, options.log);
         LogCond("file formats: " + options.formats.join(', '), options.log);
 
-        // Get all source files
-        var files = getFiles(sourceDir, { formats: options.formats, recursive: true });
+        // Gather all source files
+        var files = getFiles(options.srcDir, { formats: options.formats, recursive: true });
         LogCond("total files: " + files.length, options.log);
 
+        // Detect breaking changes
+
+        // let sameSourceWhileOnTheSpotMode = db.lastSourceDir == options.srcDir && options.onTheSpot;
+        // let sameSourceAndSameOutput = db.lastSourceDir == options.srcDir && db.lastOutDir == options.outDir;
+        // let dirChanged = !(sameSourceWhileOnTheSpotMode || sameSourceAndSameOutput);
+        let changeWhileOnTheSpotMode = options.onTheSpot && db.lastSourceDir != options.srcDir;
+        let changeWhileNotOnTheSpotMode = !options.onTheSpot && (db.lastSourceDir != options.srcDir || db.lastOutDir != options.outDir);
+        let dirChanged = changeWhileOnTheSpotMode || changeWhileNotOnTheSpotMode;
+
+        let onTheSpotChanged = db.onTheSpot !== options.onTheSpot;
+
         let cFiles;
-        // srcDir unchanged while not in out mode  OR  srcDir and outDir both unchanged
-        if (db.lastSourceDir == sourceDir &&
-            (!options.outDir || db.lastOutDir == options.outDir)) {
+        if (dirChanged || onTheSpotChanged) {
+
+            // emptyCache();
+            db.Empty();
+
+            // get all script files
+            let fileObjs = Array.from(files, p => {return {
+                path: p,
+                date: fs.statSync(p).mtime
+            }});
+            cFiles = { deleted: [], added: fileObjs, changed: [], unchanged: [] };
+
+        } else {
+
             // get classified files list
             // knowing which files have been deleted allows to remove them from database & cache
             // knowing which files have been modified allows to avoid useless checks
@@ -64,45 +86,34 @@ export function resolveScripts(db, sourceDir, options) {
             }
 
             cFiles = { deleted: deletedFiles, added: addedFiles, changed: changedFiles, unchanged: unchangedFiles };
-            
-        } else {
-
-            emptyCache();
-            db.fileList = [];
-
-            // get all files
-            let fileObjs = Array.from(files, p => {return {
-                path: p,
-                date: fs.statSync(p).mtime
-            }});
-            cFiles = { deleted: [], added: fileObjs, changed: [], unchanged: [] };
         }
 
         // Manage deleted files
-        for (let i = 0; i < cFiles.deleted.length; i++) {
-            if (cFiles.deleted[i].cached) {
-                removeFromCache(cFiles.deleted[i].path);
+        if (options.onTheSpot) {
+            for (let i = 0; i < cFiles.deleted.length; i++) {
+                if (cFiles.deleted[i].cached) {
+                    removeFromCache(cFiles.deleted[i].path);
+                }
             }
         }
 
         // Manage changed & added files
         let filesToProcess = cFiles.added.concat(cFiles.changed);
-        LogCond("files to preprocess: " + filesToProcess.length, options.log);
-        if (options.log) {
-            console.table({ amount: {deleted: cFiles.deleted.length,
+        LogCond("files needing preprocess: " + filesToProcess.length, options.log);
+        LogCond({ amount: {deleted: cFiles.deleted.length,
                 added: cFiles.added.length,
                 changed: cFiles.changed.length,
-                unchanged: cFiles.unchanged.length} });
-        }
+                unchanged: cFiles.unchanged.length} }, options.log, 'table');
         
         // resolve
-        !!options.outDir ? resolveIntoOutDir(filesToProcess, options, db) : resolveIntoSrcDir(filesToProcess, options);
+        options.onTheSpot ? resolveIntoSrcDir(filesToProcess, options) : resolveIntoOutDir(filesToProcess, options, db);
 
         // Update db flags
         db.fileList = filesToProcess.concat(cFiles.unchanged);
-        if (!options.outDir) db.restored = false;
-        db.lastSourceDir = sourceDir;
-        if (!!options.outDir) db.lastOutDir = options.outDir;
+        if (options.onTheSpot) db.restored = false;
+        db.lastSourceDir = options.srcDir;
+        db.lastOutDir = options.onTheSpot ? undefined : options.outDir;
+        db.onTheSpot = options.onTheSpot;
 
         return {
             success: true,
@@ -179,14 +190,13 @@ function resolveIntoOutDir(filesToProcess, options, db) {// db read-only
         if (options.log) options.preprocessOptions.fileAdress = path.parse(filesToProcess[i].path).base;
         file = preprocess(file, options.preprocessOptions);
 
-        // treat file: in case of any change, or when in out mode & given a new outDir
+        // treat file: in case of any change, or when not in onTheSpot mode & given a new outDir
         if (fileSize != file.length ||
-            !!options.outDir && db.lastOutDir != options.outDir) {
+            !options.onTheSpot && db.lastOutDir != options.outDir) {
 
-            let filePath = path.resolve(options.outDir, filesToProcess[i].path);
+            let filePath = path.join(options.outDir, filesToProcess[i].path);
 
             // create out directory if inexistent
-            LogColor(options.outDir, 'magenta')
             if (!fs.existsSync( path.parse(filePath).dir )) {
                 fs.mkdirSync( path.parse(filePath).dir , { recursive: true });
             }
@@ -196,11 +206,6 @@ function resolveIntoOutDir(filesToProcess, options, db) {// db read-only
                 if (err)
                     LogError("couldn't resolve file " + filesToProcess[i].path + "\n" + err, true, true);
             });
-
-            // update cached flag
-            filesToProcess[i].cached = true;
-        } else {
-            filesToProcess[i].cached = false;
         }
 
         // update date flag
