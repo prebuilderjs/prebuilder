@@ -8,7 +8,8 @@
     "dev": "rollup -w -c rollup.config.mjs",
     "test-resolve": "node dist/index.js resolve",
     "test-restore": "node dist/index.js restore",
-    "test-wrap": "node dist/index.js wrap \"npx rollup -c test/rollup.config.mjs\""
+    "test-wrap": "node dist/index.js wrap \"npx rollup -c tests/on-the-spot/rollup.config.mjs\" -c tests/on-the-spot/prebuilder.config.js",
+    "test-wrap-out": "node dist/index.js wrap \"npx rollup -c tests/to-dir/rollup.config.mjs\" -c tests/to-dir/prebuilder.config.js"
   },
   "bin": {
     "prebuild": "dist/index.js"
