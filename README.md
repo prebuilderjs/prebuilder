@@ -288,6 +288,7 @@ Currently these packages are alongside this project:
 - Added possibility to resolve files to a specific folder
 - Renamed `preduild start` command to `preduild wrap`
 - Renamed `--dir` command to `--srcDir`
+- Hide temp folder on windows
 
 </details>
 
