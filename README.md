@@ -141,7 +141,7 @@ prebuild --help
 
 ## Parameter descriptions:
 |       Parameters              | alias |        Expected values          |        Descriptions                                                                                                    |
-|    ---                        |       |            ---                  |            ---                                                                                                         |
+|    ---                        |  ---  |            ---                  |            ---                                                                                                         |
 | wrap command's<br> first parameeter | |                                 | A non-persistent cli command                                                                                           |
 | `--srcDir`                    | `-s`  | path (string)                   | Source folder's path.                                                                                                  |
 | `--outDir`                    | `-o`  | path (string)                   | Output folder's path.                                                                                                  |
@@ -149,7 +149,7 @@ prebuild --help
 | `--formats`                   | `-f`  | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
 | `--onTheSpot`                 |       |                                 | Resolve scripts keeping them in their source folder                                                                    |
 | `--preprocessDefines`         |       | define, or set of <br>defines separated <br>by a comma `,` (string)           | List of defines based on which to validate <br>#if statements.           |
-| `--preprocessMode`            |       | `"plain"` or<br>`"commented"` or<br>`"both"`  | Wether to preprocess directives written plainly `#if` or in a comment `//#if`. Default value is "both".  |
+| `--preprocessMode`            |       | `"plain"` or<br>`"commented"` or<br>`"both"`  | Wether to preprocess directives written <br>plainly `#if` or in a comment `//#if`. <br>Default value is "both".  |
 | `--config`                    | `-c`  | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
 
 ## Use case examples
