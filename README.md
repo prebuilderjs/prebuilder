@@ -156,10 +156,15 @@ prebuild --help
 prebuild resolve --srcDir "src" --preprocessDefines "TARGET_BROWSER, ANDROID"
 ```
 
-source code :
+<table>
+    <tr>
+        <th>Original</th>
+        <th>Resolved</th>
+    </tr>
+    <tr>
+<td>
 
 ```c#
-
 // ----------------- CASE 1 -----------------
 // import statement, depending on platform
 #if TARGET_BROWSER
@@ -227,7 +232,9 @@ class MyClass {
 }
 ```
 
-resolved code :
+<!-- these need to no be indented -->
+</td>
+<td>
 
 ```js
 import path from 'browser-path';
@@ -243,10 +250,63 @@ class MyClass {
     }
 
     myConfig = {
-        apiUrl: "https://.api.some-site.net/android"
+        apiUrl: "https://.api.some-site.net/android",
+        greeting: "Hi Android user!",
     };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
+
+</td>
+    </tr>
+</table>
 </details>
 
 ## Planned features
