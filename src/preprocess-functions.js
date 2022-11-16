@@ -192,7 +192,8 @@ function resolveIntoOutDir(filesToProcess, options, db) {// db read-only
         if (fileSize != file.length ||
             !options.onTheSpot && db.lastOutDir != options.outDir) {
 
-            let filePath = path.join(options.outDir, filesToProcess[i].path);
+            let srcRelativeDir = path.relative(options.srcDir, filesToProcess[i].path);
+            let filePath = path.join(options.outDir, srcRelativeDir);
 
             // create out directory if inexistent
             if (!fs.existsSync( path.parse(filePath).dir )) {
