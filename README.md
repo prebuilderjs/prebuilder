@@ -60,7 +60,7 @@ Resolves directives in every script of a given source folder, and caches their o
 prebuild resolve --srcDir "src"
 ```
 
-![](.screenshots/prebuild%20resolve.png)
+![](.screenshots/resolve%20w-wo%20on%20the%20spot.svg)
 
 |       Parameters      |        Required       |  Needs value  |      Examples                                                                                |
 |    ---                |          :---:        |     :---:     |        ---                                                                                   |
@@ -81,12 +81,10 @@ prebuild resolve --srcDir "src"
   <span style="white-space: pre;">    (click)</span>
 </summary>
 
-Restores back original scripts (with unresolved directives).
+Restores back original scripts (with unresolved directives) if resolved with --onTheSpot mode.
 ```sh
 prebuild restore
 ```
-
-![](.screenshots/prebuild%20restore.png)
 
 |       Parameters       |     Required     |   Needs value   |
 |    ---                 |       :---:      |      :---:      |
@@ -106,7 +104,7 @@ This is useful to run bundlers and linters on resolved code, thus avoiding runti
 prebuild wrap "my command" --srcDir "src"
 ```
 
-![](.screenshots/prebuild%20wrap.png)
+![](.screenshots/wrap%20w-wo%20on%20the%20spot.svg)
 
 |       Parameters       |        Required      |  Needs value  |      Examples                                        |
 |    ---                 |          :---:       |     :---:     |        ---                                           |
