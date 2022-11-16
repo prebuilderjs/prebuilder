@@ -156,6 +156,7 @@ prebuild --help
 prebuild resolve --srcDir "src" --preprocessDefines "TARGET_BROWSER, ANDROID"
 ```
 
+### Case 1 import depending on target platform
 <table>
     <tr>
         <th>Original</th>
@@ -165,136 +166,172 @@ prebuild resolve --srcDir "src" --preprocessDefines "TARGET_BROWSER, ANDROID"
 <td>
 
 ```c#
-// ----------------- CASE 1 -----------------
-// import statement, depending on platform
 #if TARGET_BROWSER
 import path from 'browser-path';
 #else
 const path = require('path');
 #endif
+```
+<!-- these need to no be indented -->
+</td>
+<td>
 
+```c#
+
+import path from 'browser-path';
+
+
+
+```
+
+</td>
+    </tr>
+</table>
+
+### Case 2 debugging & testing
+<table>
+    <tr>
+        <th>Original</th>
+        <th>Resolved</th>
+    </tr>
+    <tr>
+<td>
+
+```c#
 class MyClass {
 
-    constructor() {
-        this.fetchedData = fetchSomeData();
+    constructor(apiUrl) {
+        this.apiUrl = apiUrl;
+        this.myData = fetchData(apiUrl);
     }
-
-    // ----------------- CASE 2 -----------------
-    // debugging & testing
 
     #if DEBUG
     // log info
-    console.log("using api: " + myConfig.apiUrl);
+    console.log("using api: " + this.apiUrl);
     // test
     Test = () => {
         console.log("running MyClass test");
 
         try {
-            JSON.parse(this.fetchedData);
+            JSON.parse(this.myData);
             console.log("✔ data is valid");
         } catch {
-            console.error("✘ data is not valid");
+            console.error("✘ invalid data");
         }
     }
     #endif
+}
+```
+<!-- these need to no be indented -->
+</td>
+<td>
 
-    // ----------------- CASE 3 -----------------
-    // Function definition, depending on feature support:
+```c#
+class MyClass {
 
+    constructor(apiUrl) {
+        this.apiUrl = apiUrl;
+        this.myData = fetchData(apiUrl);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+```
+
+</td>
+    </tr>
+</table>
+
+### Case 3 Function definition depending on feature support
+<table>
+    <tr>
+        <th>Original</th>
+        <th>Resolved</th>
+    </tr>
+    <tr>
+<td>
+
+```c#
     // negative #if
 #if !PARAM_2_SUPPORTED
-    myFunction = (param) => {
+    var myFunction = (param) => {
         return param + 1;
     }
 #else
-    myFunction = (param1, param2) => {
+    var myFunction = (param1, param2) => {
         return param * param2 + 1;
     }
 #endif
+```
+<!-- these need to no be indented -->
+</td>
+<td>
 
-    // ----------------- CASE 4 -----------------
-    // Variable definition, depending on platform:
+```c#
 
+
+    var myFunction = (param) => {
+        return param + 1;
+    }
+
+
+
+
+
+```
+
+</td>
+    </tr>
+</table>
+
+### Case 4 Variable definition depending on platform
+<table>
+    <tr>
+        <th>Original</th>
+        <th>Resolved</th>
+    </tr>
+    <tr>
+<td>
+
+```c#
     // commented mode
 //#if ANDROID
     myConfig = {
-        apiUrl: "https://.api.some-site.net/android",
+        apiUrl:"api.site.net/android",
         greeting: "Hi Android user!",
     };
 //#endif
 //#if IOS
     //#post-code myConfig = {
-    //#post-code     apiUrl: "https://.api.some-site.net/ios",
+    //#post-code     apiUrl: "api.site.net/ios",
     //#post-code     greeting: "Hi iOS user!"
     //#post-code };
 //#endif
-
-}
 ```
-
 <!-- these need to no be indented -->
 </td>
 <td>
 
-```js
-import path from 'browser-path';
-
-class MyClass {
-
-    constructor() {
-        this.fetchedData = fetchSomeData();
-    }
-
-    myFunction = (param) => {
-        return param + 1;
-    }
-
-    myConfig = {
-        apiUrl: "https://.api.some-site.net/android",
-        greeting: "Hi Android user!",
-    };
-}
+```c#
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+myConfig = {
+    apiUrl: "api.site.net/android",
+    greeting: "Hi Android user!",
+};
 
 
 
@@ -307,6 +344,7 @@ class MyClass {
 </td>
     </tr>
 </table>
+
 </details>
 
 ## Planned features
