@@ -27,13 +27,6 @@ export async function resolve(options = { formats: ['.js', '.ts'], preprocessOpt
     if (!(typeof options === 'object' && !Array.isArray(options) && options != null)) {
         LogError("invalid options parameter value.", true, true);
 
-    if (!options.srcDir) {
-        LogError("prebuild error: No source directory has been set, check configuration file or add --scrDir parameter.", false, true);
-        
-    } else if (!options.onTheSpot && !options.outDir) {
-        LogError("prebuild error: No output directory has been set, check configuration file or add --outDir parameter.", false, true);
-    }
-
     } else if (!options.formats) {
         options.formats = ['.js', '.ts'];
 
@@ -43,6 +36,14 @@ export async function resolve(options = { formats: ['.js', '.ts'], preprocessOpt
     } else if (!(options.formats instanceof Array)) {
         LogError("invalid file formats value.", true, true);
     }
+
+    if (!options.srcDir) {
+        LogError("prebuild error: No source directory has been set, check configuration file or add --scrDir parameter.", false, true);
+        
+    } else if (!options.onTheSpot && !options.outDir) {
+        LogError("prebuild error: No output directory has been set, check configuration file or add --outDir parameter.", false, true);
+    }
+
     options.log = options.log === true;
     options.preprocessOptions = options.preprocessOptions || {};
     options.preprocessOptions.log = options.log;
@@ -161,8 +162,10 @@ export async function wrap(command, options) {
     try {
         await resolve(options);
     } catch (err) {
-        LogError("prebuild wrap error: preprocess resolution aborted\n", false, false);
-        throw err;
+        // LogError("prebuild wrap error: preprocess resolution aborted\n", false, false);
+        // throw err;
+
+        LogError("prebuild wrap error: preprocess resolution aborted\n", false, true);
     }
 
     // Exec command
