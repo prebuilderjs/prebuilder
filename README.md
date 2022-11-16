@@ -47,6 +47,212 @@ This is very useful in various cases, like for example:
 npm i --save-dev prebuilder
 ```
 
+---
+
+<details>
+<summary>
+  <h2 style="display:inline-block">Use case examples</h2>
+  <span style="white-space: pre;">    (click)</span>
+</summary>
+Using:
+
+```sh
+prebuild resolve --srcDir "src" --preprocessDefines "TARGET_BROWSER, ANDROID"
+```
+
+### Case 1) import depending on target platform
+<table>
+    <tr>
+        <th>Original</th>
+        <th>Resolved</th>
+    </tr>
+    <tr>
+<td>
+
+```c#
+#if TARGET_BROWSER
+import path from 'browser-path';
+#else
+const path = require('path');
+#endif
+```
+<!-- these need to no be indented -->
+</td>
+<td>
+
+```c#
+
+import path from 'browser-path';
+
+
+
+```
+
+</td>
+    </tr>
+</table>
+
+### Case 2) debugging & testing
+<table>
+    <tr>
+        <th>Original</th>
+        <th>Resolved</th>
+    </tr>
+    <tr>
+<td>
+
+```c#
+class MyClass {
+
+   constructor(apiUrl) {
+       this.apiUrl = apiUrl;
+       this.myData = fetchData(apiUrl);
+   }
+
+   #if DEBUG
+   // log info
+   console.log("api: " +this.apiUrl);
+   // test
+   Test = () => {
+      console.log("MyClass test:");
+
+      try {
+         JSON.parse(this.myData);
+         console.log("data ✔");
+      } catch {
+         console.error("data ✘");
+      }
+   }
+   #endif
+}
+```
+<!-- these need to no be indented -->
+</td>
+<td>
+
+```c#
+class MyClass {
+
+   constructor(apiUrl) {
+      this.apiUrl = apiUrl;
+      this.myData = fetchData(apiUrl);
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+```
+
+</td>
+    </tr>
+</table>
+
+### Case 3) Function definition depending on feature support
+<table>
+    <tr>
+        <th>Original</th>
+        <th>Resolved</th>
+    </tr>
+    <tr>
+<td>
+
+```c#
+    // negative #if
+#if !PARAM_2_SUPPORTED
+    var myFunction = (param) => {
+        return param + 1;
+    }
+#else
+    var myFunction = (param1, param2) => {
+        return param * param2 + 1;
+    }
+#endif
+```
+<!-- these need to no be indented -->
+</td>
+<td>
+
+```c#
+
+
+    var myFunction = (param) => {
+        return param + 1;
+    }
+
+
+
+
+
+```
+
+</td>
+    </tr>
+</table>
+
+### Case 4) Variable definition depending on platform
+<table>
+    <tr>
+        <th>Original</th>
+        <th>Resolved</th>
+    </tr>
+    <tr>
+<td>
+
+```c#
+    // commented mode
+//#if ANDROID
+   myConfig = {
+      apiUrl:"api.site.net/android",
+      greeting: "Hi Android user!",
+   };
+//#endif
+//#if IOS
+   //#post-code myConfig = {
+   //#post-code    apiUrl: "api.site.net/ios",
+   //#post-code    greeting: "Hi iOS user!"
+   //#post-code };
+//#endif
+```
+<!-- these need to no be indented -->
+</td>
+<td>
+
+```c#
+
+
+myConfig = {
+    apiUrl: "api.site.net/android",
+    greeting: "Hi Android user!",
+};
+
+
+
+
+
+
+
+```
+
+</td>
+    </tr>
+</table>
+
+</details>
+
+---
+
 ## Commands
 
 <details>
@@ -60,7 +266,7 @@ Resolves directives in every script of a given source folder, and caches their o
 prebuild resolve --srcDir "src"
 ```
 
-![](.screenshots/resolve%20w-wo%20on%20the%20spot.svg)
+![](.screenshots/prebuild%20restore.svg)
 
 |       Parameters      |        Required       |  Needs value  |      Examples                                                                                |
 |    ---                |          :---:        |     :---:     |        ---                                                                                   |
@@ -104,7 +310,7 @@ This is useful to run bundlers and linters on resolved code, thus avoiding runti
 prebuild wrap "my command" --srcDir "src"
 ```
 
-![](.screenshots/wrap%20w-wo%20on%20the%20spot.svg)
+![](.screenshots/prebuild%20wrap.svg)
 
 |       Parameters       |        Required      |  Needs value  |      Examples                                        |
 |    ---                 |          :---:       |     :---:     |        ---                                           |
@@ -150,202 +356,7 @@ prebuild --help
 | `--preprocessMode`            |       | `"plain"` or<br>`"commented"` or<br>`"both"`  | Wether to preprocess directives written <br>plainly `#if` or in a comment `//#if`. <br>Default value is "both".  |
 | `--config`                    | `-c`  | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
 
-## Use case examples
-
-```sh
-prebuild resolve --srcDir "src" --preprocessDefines "TARGET_BROWSER, ANDROID"
-```
-
-### Case 1 import depending on target platform
-<table>
-    <tr>
-        <th>Original</th>
-        <th>Resolved</th>
-    </tr>
-    <tr>
-<td>
-
-```c#
-#if TARGET_BROWSER
-import path from 'browser-path';
-#else
-const path = require('path');
-#endif
-```
-<!-- these need to no be indented -->
-</td>
-<td>
-
-```c#
-
-import path from 'browser-path';
-
-
-
-```
-
-</td>
-    </tr>
-</table>
-
-### Case 2 debugging & testing
-<table>
-    <tr>
-        <th>Original</th>
-        <th>Resolved</th>
-    </tr>
-    <tr>
-<td>
-
-```c#
-class MyClass {
-
-    constructor(apiUrl) {
-        this.apiUrl = apiUrl;
-        this.myData = fetchData(apiUrl);
-    }
-
-    #if DEBUG
-    // log info
-    console.log("using api: " + this.apiUrl);
-    // test
-    Test = () => {
-        console.log("running MyClass test");
-
-        try {
-            JSON.parse(this.myData);
-            console.log("✔ data is valid");
-        } catch {
-            console.error("✘ invalid data");
-        }
-    }
-    #endif
-}
-```
-<!-- these need to no be indented -->
-</td>
-<td>
-
-```c#
-class MyClass {
-
-    constructor(apiUrl) {
-        this.apiUrl = apiUrl;
-        this.myData = fetchData(apiUrl);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-```
-
-</td>
-    </tr>
-</table>
-
-### Case 3 Function definition depending on feature support
-<table>
-    <tr>
-        <th>Original</th>
-        <th>Resolved</th>
-    </tr>
-    <tr>
-<td>
-
-```c#
-    // negative #if
-#if !PARAM_2_SUPPORTED
-    var myFunction = (param) => {
-        return param + 1;
-    }
-#else
-    var myFunction = (param1, param2) => {
-        return param * param2 + 1;
-    }
-#endif
-```
-<!-- these need to no be indented -->
-</td>
-<td>
-
-```c#
-
-
-    var myFunction = (param) => {
-        return param + 1;
-    }
-
-
-
-
-
-```
-
-</td>
-    </tr>
-</table>
-
-### Case 4 Variable definition depending on platform
-<table>
-    <tr>
-        <th>Original</th>
-        <th>Resolved</th>
-    </tr>
-    <tr>
-<td>
-
-```c#
-    // commented mode
-//#if ANDROID
-    myConfig = {
-        apiUrl:"api.site.net/android",
-        greeting: "Hi Android user!",
-    };
-//#endif
-//#if IOS
-    //#post-code myConfig = {
-    //#post-code     apiUrl: "api.site.net/ios",
-    //#post-code     greeting: "Hi iOS user!"
-    //#post-code };
-//#endif
-```
-<!-- these need to no be indented -->
-</td>
-<td>
-
-```c#
-
-
-myConfig = {
-    apiUrl: "api.site.net/android",
-    greeting: "Hi Android user!",
-};
-
-
-
-
-
-
-
-```
-
-</td>
-    </tr>
-</table>
-
-</details>
+---
 
 ## Planned features
 - [x] use a config .json file
