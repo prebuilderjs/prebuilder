@@ -42,7 +42,7 @@ export function parseArgs(paramDefs) {
         result.command = null;
     
     // params
-    result.params = SearchForParams(result.command, result.args.slice(1), paramDefs);
+    result.params = SearchForParams(result.command, result.args, paramDefs);
 
     return result;
 }
