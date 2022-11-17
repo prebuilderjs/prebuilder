@@ -1,5 +1,7 @@
 
 import { LogError, LogColor, LogWarn } from './logger';
+import { setSubProperty } from './utils';
+
 
 /**
  * Extract current process' instructions from its arguments list.
@@ -100,87 +102,4 @@ function SearchForParams(command, args, paramDefs) {
     }
 
     return tempParams;
-}
-
-
-function getSubProperty(obj, path) {
-            
-    // parse depth layer keys
-    let DKeys = path.replaceAll(' ', '').split('.');
-    DKeys = DKeys.filter(el => !!el);// remove empty
-
-    // go to prop and modify it
-    let prop = obj;
-
-    for (let i = 0; i < DKeys.length; i++) {
-
-        prop = prop[DKeys[i]];
-
-        // stop if prop can't contain sub-props 
-        if (!prop || prop.constructor !== Object) {
-            console.error(new Error("getSubProperty(): Couldn't reach targeted prop"));
-            return undefined;
-        }
-    }
-
-    return prop;
-}
-
-function setSubProperty(obj, path, value, force = true) {
-    
-    // parse depth layer keys
-    let DKeys = path.replaceAll(' ', '').split('.');
-    DKeys = DKeys.filter(el => !!el);// remove empty
-
-    // go to prop and modify it
-    let prop = obj;
-    let propDepthLayers = [];
-
-    for (let i = 0; i < DKeys.length; i++) {
-
-        // step in next depth layer
-        prop = prop[DKeys[i]];
-
-        // assign value if reached targeted prop
-        if (i == DKeys.length - 1) {
-            prop = value;
-
-            // if this prop value not an object
-        } else if (!prop || prop.constructor !== Object) {
-            if (force) {
-                // create new object if fordce mode active
-                prop = {};
-            } else {
-                // stop if prop can't contain sub-props 
-                console.error(new Error("setSubProperty(): Couldn't reach targeted prop"));
-                return obj;
-            }
-        }
-
-        // save layer
-        propDepthLayers.push({ key: DKeys[i], value: prop });
-    }
-
-    // reconstruct modified object (necessary as copy by reference parameters unavailable in js)
-    let tempObj = {};
-    for (let i = propDepthLayers.length - 1; i >= 0; i--) {
-
-        // insert & overwrite deeper layer prop in this one
-        if (i < propDepthLayers.length - 1) {
-            //prop layer |   next prop's key   | next prop's value
-            propDepthLayers[i].value[propDepthLayers[i+1].key] = propDepthLayers[i+1].value;
-        }
-
-        // add updated shallower depth layer to temporary return object 
-        if (i == 0) {
-            // add updated shallower depth layer to root of obj (maintain unkown siblings)
-            tempObj = obj;
-            tempObj[propDepthLayers[i].key] = propDepthLayers[i].value;
-        } else {
-            // add updated shallower depth layer to temporary return object 
-            tempObj = { [propDepthLayers[i].key] : propDepthLayers[i].value };
-        }
-    }
-
-    return tempObj;
 }
