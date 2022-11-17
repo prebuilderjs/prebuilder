@@ -21,8 +21,8 @@ export function resolveScripts(db, options) {
         // let sameSourceWhileOnTheSpotMode = db.lastSourceDir == options.srcDir && options.onTheSpot;
         // let sameSourceAndSameOutput = db.lastSourceDir == options.srcDir && db.lastOutDir == options.outDir;
         // let dirChanged = !(sameSourceWhileOnTheSpotMode || sameSourceAndSameOutput);
-        let changeWhileOnTheSpotMode = options.onTheSpot && db.lastSourceDir != options.srcDir;
-        let changeWhileNotOnTheSpotMode = !options.onTheSpot && (db.lastSourceDir != options.srcDir || db.lastOutDir != options.outDir);
+        let changeWhileOnTheSpotMode = options.onTheSpot && !pathEqual(db.lastSourceDir, options.srcDir);
+        let changeWhileNotOnTheSpotMode = !options.onTheSpot && (!pathEqual(db.lastSourceDir, options.srcDir) || !pathEqual(db.lastOutDir, options.outDir));
         let dirChanged = changeWhileOnTheSpotMode || changeWhileNotOnTheSpotMode;
 
         let onTheSpotChanged = db.onTheSpot !== options.onTheSpot;
@@ -125,6 +125,10 @@ export function resolveScripts(db, options) {
             db: db
         };
     }
+}
+
+function pathEqual(path1, path2) {
+    return path$2.parse(path1).dir == path$2.parse(path2).dir;
 }
 
 function resolveIntoSrcDir(filesToProcess, options) {
