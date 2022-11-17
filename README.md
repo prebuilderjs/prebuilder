@@ -266,7 +266,7 @@ Resolves directives in every script of a given source folder, and caches their o
 prebuild resolve --srcDir "src"
 ```
 
-![](.screenshots/prebuild%20restore.svg)
+![](.screenshots/prebuild%20resolve.svg)
 
 |       Parameters      |        Required       |  Needs value  |      Examples                                                                                |
 |    ---                |          :---:        |     :---:     |        ---                                                                                   |
