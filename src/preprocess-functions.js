@@ -193,9 +193,9 @@ function resolveIntoOutDir(filesToProcess, options, db) {// db read-only
         if (options.log) options.preprocessOptions.fileAdress = path.parse(filesToProcess[i].path).base;
         file = preprocess(file, options.preprocessOptions);
 
-        // treat file: in case of any change, or when not in onTheSpot mode & given a new outDir
-        if (fileSize != file.length ||
-            !options.onTheSpot && db.lastOutDir != options.outDir) {
+        let contentChangeWhileOnTheSpotMode = options.onTheSpot && fileSize != file.length;
+        let dirChangeWhileNotOnTheSpotMode = !options.onTheSpot && (!pathEqual(db.lastSourceDir, options.srcDir) || !pathEqual(db.lastOutDir, options.outDir));
+        if (contentChangeWhileOnTheSpotMode || dirChangeWhileNotOnTheSpotMode) {
 
             let srcRelativeDir = path.relative(options.srcDir, filesToProcess[i].path);
             let filePath = path.join(options.outDir, srcRelativeDir);
