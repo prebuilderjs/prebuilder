@@ -128,7 +128,8 @@ export function resolveScripts(db, options) {
 }
 
 function pathEqual(path1, path2) {
-    return path$2.parse(path1).dir == path$2.parse(path2).dir;
+    if (typeof path1 !== "string" || typeof path2 !== "string") return false;
+    return path.parse(path1).dir == path.parse(path2).dir;
 }
 
 function resolveIntoSrcDir(filesToProcess, options) {
