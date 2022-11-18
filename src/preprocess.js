@@ -226,7 +226,6 @@ export async function wrap(command, options) {
             throw err;
         }
     } else if (options.watch) {
-        LogColor("prebuilder in watch mode...\n", 'cyan');
 
         if (!global.watcher) {
             global.watcher = chokidar.watch(options.srcDir, {persistent: true, awaitWriteFinish: true,  });
@@ -234,7 +233,14 @@ export async function wrap(command, options) {
                 .on('change', () => { wrap(command, options); })
                 .on('unlink', () => { wrap(command, options); })
                 .on('error', (err) => { throw err; });
+
+            global.watchIterationCount = 0;
+        } else {
+            global.watchIterationCount += 1;
         }
+
+        console.clear();
+        LogColor(`\n\n\nPrebuilder watch mode iteration \x1b[33m${global.watchIterationCount}\n`, 'cyan');
     }
 }
 
