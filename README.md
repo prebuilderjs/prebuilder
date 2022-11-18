@@ -8,8 +8,8 @@
     <a href="https://www.npmjs.com/package/prebuilder" alt="Npm version">
         <img src="https://img.shields.io/npm/v/prebuilder">
     </a>
-    <a href="https://packagephobia.com/result?p=prebuilder" alt="Size">
-        <img src="https://packagephobia.com/badge?p=prebuilder">
+    <a href="https://www.npmjs.com/package/prebuilder" alt="Size">
+        <img src="https://img.shields.io/github/languages/code-size/prebuilderjs/prebuilder">
     </a>
     <a href="https://github.com/prebuilderjs/prebuilder" alt="Licence">
         <img src="https://img.shields.io/github/license/prebuilderjs/prebuilder">
@@ -18,7 +18,7 @@
 </p>
 
 <p style="text-align:center" align="center">
-A pre-processor that brings C#-like directives to <span style="color: #a59b28; font-weight:bold">Javascript</span>, <span style="color: #126f9b; font-weight:bold">Typescript</span>, <span style="color: #b3690f; font-weight:bold">Rust</span>, <span style="color: #969762; font-weight:bold">Python</span> & any other text-based file!
+A pre-processor that brings C#-like directives to your project, supporting<br><span style="color: #a59b28; font-weight:bold">Javascript</span>, <span style="color: #126f9b; font-weight:bold">Typescript</span>, <span style="color: #b3690f; font-weight:bold">Rust</span>, <span style="color: #969762; font-weight:bold">Python</span> & any other text-based file!
 </p>
 
 ## Motivation
@@ -29,17 +29,24 @@ by conditionally including/excluding code or have different code for a specific 
 This is very useful in various cases, like for example:
 - Building different versions for:
     - different platforms
-        - ex: having a *windows* / *unix* specific default path
-        - ex: having a different api url for *desktop* / *mobile* platforms
-        - ex: importing "path" when building for *Node.js*, or npm's "browser-path" when building for *browser*
+        - ex: having a ***windows*** / ***unix*** specific default path
+        - ex: having a different api url for ***desktop*** / ***mobile*** platforms
+        - ex: importing "path" when building for ***Node.js***, or npm's "browser-path" when building for ***browser***
     - different client / server versions
 - Migrating to a newer version of a dependecy, in a non-destructive way, by retaining old version of code (allowing to go back if needed).
-- Enabling *assertions*, *debugging* and any sort of *backdoor* in non-production builds.
+- Enabling ***assertions***, ***debugging*** and any sort of ***backdoor*** in non-production builds.
 - Simplifying unit testing by including test functions only in non-production builds.
 
 ## Features
 - Source analysis: <br>remembers which are unchanged source files, and skips them for a faster preprocess.
-- Comprehensive internal flow checks: <br>preprocess errors like for a missing `#endif` do not stop prebuilding mid-way avoiding any loss of unresolved code.
+- Comprehensive internal flow checks: <br>preprocess errors do not stop prebuilding mid-way avoiding any loss of data.
+- Ease-of-use thanks to a [Rollup helper](https://github.com/prebuilderjs/rollup) and a [Typescript helper](https://github.com/prebuilderjs/tsc)
+
+## Other packages
+- [`@prebuilder/lib`](https://github.com/prebuilderjs/lib) A preprocess utility usable in Node.js and/or in the browser
+- [`@prebuilder/rollup`](https://github.com/prebuilderjs/rollup) A Prebuilder helper for an out of the box **Rollup** integration
+- [`@prebuilder/tsc`](https://github.com/prebuilderjs/tsc) A Prebuilder helper for an out of the box **Typescript** integration
+- [`@prebuilder/rollup-plugin`](https://github.com/prebuilderjs/rollup-plugin) A Rollup plugin for very simple use cases
 
 ## Install
 
@@ -315,13 +322,12 @@ prebuild wrap "my command" --srcDir "src"
 
 |       Parameters              |        Required       |  Needs value  |      Examples                                        |
 |    ---                        |          :---:        |     :---:     |        ---                                           |
-| first parameter               | ✔                    | ✔            | `prebuild wrap "npx run build"`                      |
+| first parameter               | ✔                    | ✔            | `prebuild wrap "npx run build"`<br>⚠️ Use `npx` instead of `npm`, for more information read this [issue](https://stackoverflow.com/questions/9679932/how-to-use-executables-from-a-package-installed-locally-in-node-modules)                      |
 | all of "resolve" <br>command's parameters  |          |               | `prebuild wrap "npx run build" --srcDir "src" --log` |
 | `--wrap_RunCmdFirstTimeOnly`  | ❌                    | ❌           |                                                      |
 | `--wrap_RunCmdInParallel`     | ❌                   | ❌           |                                                      |
 
-
-```sh
+<!-- ```sh
 # examples for bundling your app with resolved code:
 # - webpack
 prebuild wrap "npx webpack --config example.config.js" --srcDir "src"
@@ -329,7 +335,7 @@ prebuild wrap "npx webpack --config example.config.js" --srcDir "src"
 prebuild wrap "npx tsc" --srcDir "src"
 # - rollup
 prebuild wrap "npx rollup -c rollup.config.mjs" --srcDir "src"
-```
+``` -->
 
 </details>
 
@@ -345,54 +351,50 @@ prebuild --help
 ```
 
 </details>
+<br>
+<details>
+<summary>
+  <h2 style="display:inline-block">Parameter descriptions</h2>
+  <span style="white-space: pre;">    (click)</span>
+</summary>
 
-## Parameter descriptions:
 |       Parameters              | alias |        Expected values          |        Descriptions                                                                                                    |
 |    ---                        |  ---  |            ---                  |            ---                                                                                                         |
-| wrap command's<br> first parameeter | |                                 | A non-persistent cli command                                                                                           |
+| 'wrap' command's<br> first parameter | |                                 | A non-persistent cli command<br>⚠️ Use `npx` instead of `npm`, for more information read this [issue](https://stackoverflow.com/questions/9679932/how-to-use-executables-from-a-package-installed-locally-in-node-modules) |
 | `--srcDir`                    | `-s`  | path (string)                   | Source folder's path.                                                                                                  |
 | `--outDir`                    | `-o`  | path (string)                   | Output folder's path.                                                                                                  |
 | `--log`                       | `-l`  |                                 | Enable debug logging.                                                                                                  |
 | `--formats`                   | `-f`  | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
 | `--watch`                     | `-w`  |                                 | Watch source for changes, and auto-prebuild                                                                            |
-| `--onTheSpot`                 |       |                                 | Resolve scripts keeping them in their source folder                                                                    |
+| `--onTheSpot`                 |       |                                 | Resolve scripts keeping them in their source folder<br>⚠️ Experimental<br>⚠️ Watch mode unsupported on 'wrap' command |
 | `--wrap_RunCmdFirstTimeOnly`  |       |                                 | Run command only the first time, when passing it to wrap() with watch mode active                                      |
 | `--wrap_RunCmdInParallel`     |       |                                 | Run command in another process to avoid freezing prebuilder (useful to run tools in watch mode)                        |
 | `--preprocessDefines`         |       | define, or set of <br>defines separated <br>by a comma `,` (string)           | List of defines based on which to validate <br>#if statements.           |
 | `--preprocessMode`            |       | `"plain"` or<br>`"commented"` or<br>`"both"`  | Wether to preprocess directives written <br>plainly `#if` or in a comment `//#if`. <br>Default value is "both".  |
 | `--config`                    | `-c`  | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
 
+</details>
+
 ---
 
 ## Planned features
-- [x] use a config .js file
-- [x] (optional) resolve files in same folder
-- [x] watch mode
-- [ ] include / exclude files & folders
-- [ ] implement `#elseif` directive
-- [ ] implement `#put` directive
-- [ ] implement `#define-local` directive
-- [ ] comment mode support for html
-- [ ] comment mode support for css
-- [ ] inline directives
-- [ ] prebuild multiple sources concurrently
-- [ ] directive extensibility
-- [ ] config file extensibility
+- ☑ use a config .js file
+- ☑ (optional) resolve files in same folder
+- ☑ watch mode
+- ☐ include / exclude files & folders
+- ☐ implement `#elseif` directive
+- ☐ implement `#put` directive
+- ☐ implement `#define-local` directive
+- ☐ comment mode support for html
+- ☐ comment mode support for css
+- ☐ inline directives
+- ☐ prebuild multiple sources concurrently
+- ☐ directive extensibility
+- ☐ plugins
+- ☐ config file extensibility
 
 ## Current limitations
 - commented mode requires no space between double slash and directive `//#if` not `// #if` (solution planned).
-- `preduild wrap` doesn't support running cli tools in watch mode.
-
-## Warnings ⚠️
-- When using resolve and restore manually, be sure to restore as soon as possible, thus avoiding to forget and modify resolved code that will be overwritten on restore, or commit resolved code instead of the original.
-- When executing npm commands with `preduild wrap`, be sure to use `npx` instead of `npm`, for more information read this [issue](https://stackoverflow.com/questions/9679932/how-to-use-executables-from-a-package-installed-locally-in-node-modules).
-- When executing npm commands with `preduild wrap`, avoid using commands that run continuously, such as bundlers in watch mode, source files will be restored (overwritten) only when command has finished!, this means that any change made to source code while command is running, will be lost!
-
-## Other packages
-Currently these packages are alongside this project:
-- [`@prebuilder/lib`](https://github.com/prebuilderjs/lib) A preprocess utility usable in Node.js and/or in the browser
-- [`@prebuilder/rollup-plugin`](https://github.com/prebuilderjs/rollup-plugin) A rollup plugin for an easier time
-- [`@prebuilder/tsc`](https://github.com/prebuilderjs/tsc) A Prebuilder helper for an out of the box Typescript integration
 
 <details>
 <summary>
