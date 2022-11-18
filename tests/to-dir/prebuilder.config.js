@@ -2,7 +2,7 @@
 module.exports = {
     srcDir: 'tests/to-dir/src',
     outDir: 'tests/to-dir/output',
-    log: true,
+    log: false,
     preprocessOptions: {
         defines: [
             "MY_DIRECTIVE"

@@ -1,17 +1,19 @@
 {
   "name": "prebuilder",
-  "version": "1.2.8",
+  "version": "1.3.3",
   "description": "A pre-processor that allows for C#-like directives in javascript & other text-based files",
   "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c rollup.config.mjs",
     "dev": "rollup -w -c rollup.config.mjs",
-    "tests": "npm run test-resolve && npm run test-resolve-src && npm run test-restore && npm run test-wrap && npm run test-wrap-src",
+    "tests": "npm run test-resolve && npm run test-resolve-ots && npm run test-restore && npm run test-wrap && npm run test-wrap-ots",
     "test-resolve": "node dist/index.js resolve -c tests/to-dir/prebuilder.config.js",
-    "test-resolve-src": "node dist/index.js resolve -c tests/on-the-spot/prebuilder.config.js",
+    "test-resolve-watch": "npm run test-resolve -- -w",
+    "test-resolve-ots": "node dist/index.js resolve -c tests/on-the-spot/prebuilder.config.js",
     "test-restore": "node dist/index.js restore -c tests/on-the-spot/prebuilder.config.js",
     "test-wrap": "node dist/index.js wrap \"npx rollup -c tests/to-dir/rollup.config.mjs\" -c tests/to-dir/prebuilder.config.js",
-    "test-wrap-src": "node dist/index.js wrap \"npx rollup -c tests/on-the-spot/rollup.config.mjs\" -c tests/on-the-spot/prebuilder.config.js"
+    "test-wrap-watch": "npm run test-wrap -- -w",
+    "test-wrap-ots": "node dist/index.js wrap \"npx rollup -c tests/on-the-spot/rollup.config.mjs\" -c tests/on-the-spot/prebuilder.config.js"
   },
   "bin": {
     "prebuild": "dist/index.js"
@@ -43,6 +45,7 @@
   },
   "dependencies": {
     "@prebuilder/lib": "^1.6.10",
+    "chokidar": "^3.5.3",
     "enquirer": "^2.3.6",
     "winattr": "^3.0.0"
   }

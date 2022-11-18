@@ -275,6 +275,7 @@ prebuild resolve --srcDir "src"
 | `--formats`           | ❌                    | ✔            | `prebuild resolve --formats ".js"`<br>`--formats ".js, .ts, .cpp"`                           |
 | `--onTheSpot`         | ❌                    | ❌           |                                                                                              |
 | `--log`               | ❌                    | ❌           |                                                                                              |
+| `--watch`             | ❌                    | ❌           |                                                                                              |
 | `--preprocessDefines` | ❌                    | ✔            | `prebuild resolve --preprocessDefines "MY_DEF"`<br>`--preprocessDefines "DEFINE1, DEFINE2"`  |
 | `--preprocessMode`    | ❌                    | ✔            | `prebuild resolve --preprocessMode "both"`                                                   |
 | `--config`            | ❌                    | ✔            | `prebuild resolve --config "myprebulder.config.js"`                                          |
@@ -350,6 +351,7 @@ prebuild --help
 | `--srcDir`                    | `-s`  | path (string)                   | Source folder's path.                                                                                                  |
 | `--outDir`                    | `-o`  | path (string)                   | Output folder's path.                                                                                                  |
 | `--log`                       | `-l`  |                                 | Enable debug logging.                                                                                                  |
+| `--watch`                     | `-w`  |                                 | Watch source for changes, and auto-prebuild                                                                            |
 | `--formats`                   | `-f`  | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
 | `--onTheSpot`                 |       |                                 | Resolve scripts keeping them in their source folder                                                                    |
 | `--preprocessDefines`         |       | define, or set of <br>defines separated <br>by a comma `,` (string)           | List of defines based on which to validate <br>#if statements.           |
@@ -359,18 +361,19 @@ prebuild --help
 ---
 
 ## Planned features
-- [x] use a config .json file
-- [x] resolve files to a specific folder
-- [ ] add watch mode when prebuilding in out folder
-- [ ] add possibility to include / exclude files/folders
+- [x] use a config .js file
+- [x] (optional) resolve files in same folder
+- [x] watch mode
+- [ ] include / exclude files & folders
 - [ ] implement `#elseif` directive
 - [ ] implement `#put` directive
 - [ ] implement `#define-local` directive
-- [ ] support html comments (for comment mode)
-- [ ] support css comments (for comment mode)
-- [ ] allow to have `#else` / `#endif` in same line as `#if`
+- [ ] comment mode support for html
+- [ ] comment mode support for css
+- [ ] inline directives
 - [ ] prebuild multiple sources concurrently
 - [ ] directive extensibility
+- [ ] config file extensibility
 
 ## Current limitations
 - commented mode requires no space between double slash and directive `//#if` not `// #if` (solution planned).
@@ -398,12 +401,15 @@ Currently these packages are alongside this project:
 - bugfix: parseArgs returns null
 
 ### v 1.2
-- Added possibility to resolve files to a specific folder
+- Added possibility to resolve files to a specific folder, as default
+- resolution in same folder as source with --onTheSpot parameter
+- resolve files to a specific folder as default with --outDir
 - Renamed `preduild start` command to `preduild wrap`
 - Renamed `--dir` command to `--srcDir`
 - Hide temp folder on windows
-- resolve files to a specific folder as default with --outDir
-- resolution in same folder as source with --onTheSpot parameter
+
+### v 1.3
+- Added watch mode
 
 </details>
 

@@ -12,6 +12,10 @@ if (processInstructions) {
 
     let options = getConfigOptions(processInstructions.params);
 
+    // if (options.watch && !options.onTheSpot) {
+    //     let watcher = chokidar.watch(options.srcDir, {persistent: true});
+    // }
+
     switch (processInstructions.command) {
         case "resolve":{
 

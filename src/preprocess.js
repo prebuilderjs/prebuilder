@@ -1,9 +1,11 @@
 const { execSync } = require('child_process');
 const { Select, Confirm } = require('enquirer');
+const chokidar = require('chokidar');
 
 import { Load, Save } from './database.js';
 import { LogError, LogColor, LogWarn, LogCond } from './logger';
 import { resolveScripts, restoreScripts } from './preprocess-functions';
+import { setSubProperty } from './utils';
 
 /**
  * Resolves directives in every script of a given source folder, and caches their original versions.
@@ -111,6 +113,18 @@ export async function resolve(options = { formats: ['.js', '.ts'], preprocessOpt
     Save(processResult.db);
 
     LogCond("\n", options.log);
+
+    if (options.watch && !options.onTheSpot) {
+        LogColor("prebuilder in watch mode...\n", 'cyan');
+
+        if (!global.watcher) {
+            global.watcher = chokidar.watch(options.srcDir, {persistent: true, awaitWriteFinish: true, });
+            global.watcher.on('add', () => { resolve(options); })
+                .on('change', () => { resolve(options); })
+                .on('unlink', () => { resolve(options); })
+                .on('error', (err) => { throw err; });
+        }
+    }
 }
 
 /**
@@ -160,7 +174,7 @@ export async function wrap(command, options) {
     
     // Resolve
     try {
-        await resolve(options);
+        await resolve(setSubProperty(options, 'watch', false));
     } catch (err) {
         // LogError("prebuild wrap error: preprocess resolution aborted\n", false, false);
         // throw err;
@@ -189,6 +203,16 @@ export async function wrap(command, options) {
         } catch (err) {
             LogError("prebuild wrap error: could not restore files\n", false, false);
             throw err;
+        }
+    } else if (options.watch) {
+        LogColor("prebuilder in watch mode...\n", 'cyan');
+
+        if (!global.watcher) {
+            global.watcher = chokidar.watch(options.srcDir, {persistent: true, awaitWriteFinish: true,  });
+            global.watcher.on('add', () => { wrap(command, options); })
+                .on('change', () => { wrap(command, options); })
+                .on('unlink', () => { wrap(command, options); })
+                .on('error', (err) => { throw err; });
         }
     }
 }

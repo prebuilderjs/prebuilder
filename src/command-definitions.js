@@ -35,6 +35,12 @@ export default [
         needsValue: false,
     },
     {
+        param: '--watch',
+        alias: '-w',
+        objectPath: 'watch',
+        needsValue: false,
+    },
+    {
         param: '--preprocessDefines',
         objectPath: 'preprocessOptions.defines',
         needsValue: true,

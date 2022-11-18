@@ -172,6 +172,8 @@ function resolveIntoSrcDir(filesToProcess, options) {
 
             // update cached flag
             filesToProcess[i].cached = true;
+
+            LogCond("saved file: " + path.parse(filesToProcess[i].path).base, options.log);
         } else {
             filesToProcess[i].cached = false;
         }
@@ -193,9 +195,10 @@ function resolveIntoOutDir(filesToProcess, options, db) {// db read-only
         if (options.log) options.preprocessOptions.fileAdress = path.parse(filesToProcess[i].path).base;
         file = preprocess(file, options.preprocessOptions);
 
-        let contentChangeWhileOnTheSpotMode = options.onTheSpot && fileSize != file.length;
+        // let contentChangeWhileOnTheSpotMode = options.onTheSpot && fileSize != file.length;
+        let directivesDetected = fileSize != file.length;
         let dirChangeWhileNotOnTheSpotMode = !options.onTheSpot && (!pathEqual(db.lastSourceDir, options.srcDir) || !pathEqual(db.lastOutDir, options.outDir));
-        if (contentChangeWhileOnTheSpotMode || dirChangeWhileNotOnTheSpotMode) {
+        if (directivesDetected || dirChangeWhileNotOnTheSpotMode || true) {
 
             let srcRelativeDir = path.relative(options.srcDir, filesToProcess[i].path);
             let filePath = path.join(options.outDir, srcRelativeDir);
@@ -210,6 +213,8 @@ function resolveIntoOutDir(filesToProcess, options, db) {// db read-only
                 if (err)
                     LogError("couldn't resolve file " + filesToProcess[i].path + "\n" + err, true, true);
             });
+
+            LogCond("saved file: " + path.parse(filesToProcess[i].path).base, options.log);
         }
 
         // update date flag
