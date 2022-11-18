@@ -92,10 +92,17 @@ export function setSubProperty(obj, path, value, force = true, throwOnError = fa
             propDepthLayers[i].value[propDepthLayers[i+1].key] = propDepthLayers[i+1].value;
         }
 
-        // add updated shallower depth layer to temporary return object 
+        // if reached end
         if (i == 0) {
-            // add updated shallower depth layer to root of obj (maintain unkown siblings)
-            tempObj = obj;
+            // add updated shallowest depth layer to root of obj (maintain unkown siblings)
+            // ---this is abandoned as it keeps reference
+            // tempObj = obj;
+            // ---without passing obj reference
+            for (const key in obj) {
+                tempObj[key] = obj[key];
+            }
+            
+            // add updated shallower depth layer to temporary return object 
             tempObj[propDepthLayers[i].key] = propDepthLayers[i].value;
         } else {
             // add updated shallower depth layer to temporary return object 
