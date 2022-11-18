@@ -42,10 +42,16 @@ export default [
         commands: ['resolve', 'wrap'],
     },
     {
-        param: '--watch_RunCmdFirstTimeOnly',
-        objectPath: 'watch_RunCmdFirstTimeOnly',
+        param: '--wrap_RunCmdFirstTimeOnly',
+        objectPath: 'wrap_RunCmdFirstTimeOnly',
         needsValue: false,
         commands: ['resolve', 'wrap'],
+    },
+    {
+        param: '--wrap_RunCmdInParallel',
+        objectPath: 'wrap_RunCmdInParallel',
+        needsValue: false,
+        commands: ['wrap'],
     },
     {
         param: '--preprocessDefines',

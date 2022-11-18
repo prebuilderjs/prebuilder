@@ -1,4 +1,4 @@
-const { execSync } = require('child_process');
+const { exec, execSync } = require('child_process');
 const { Select, Confirm } = require('enquirer');
 const chokidar = require('chokidar');
 
@@ -184,18 +184,30 @@ export async function wrap(command, options) {
 
     // Exec command
     if (!options.watch || // run anytime
-        (options.watch && !options.watch_RunCmdFirstTimeOnly) || // watch + run anytime
-        (options.watch && options.watch_RunCmdFirstTimeOnly && !global.didRunCmdFirstTimeOnly)) { // watch + run first time
+        (options.watch && !options.wrap_RunCmdFirstTimeOnly) || // watch + run anytime
+        (options.watch && options.wrap_RunCmdFirstTimeOnly && !global.didRunCmdFirstTimeOnly)) { // watch + run first time
         
 
         LogCond("--- Command wrap", options.log);
         try {
-            execSync(command, (err, stdout, stdrr) => {
-                console.log(stdout);
+            if (options.wrap_RunCmdInParallel) {
+
+                exec(command, (err, stdout, stdrr) => {
+                    console.log(stdout);
+                    
+                    if (err) throw err;
+                    if (stdrr) throw stdrr;
+                });
                 
-                if (err) throw err;
-                if (stdrr) throw stdrr;
-            });
+            } else {
+                
+                execSync(command, (err, stdout, stdrr) => {
+                    console.log(stdout);
+                    
+                    if (err) throw err;
+                    if (stdrr) throw stdrr;
+                });
+            }
         } catch (err) {
             LogError("prebuild wrap error: sub-command run with error:\n" + err, false, false);
         }
