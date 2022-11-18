@@ -39,6 +39,13 @@ export default [
         alias: '-w',
         objectPath: 'watch',
         needsValue: false,
+        commands: ['resolve', 'wrap'],
+    },
+    {
+        param: '--watch_RunCmdFirstTimeOnly',
+        objectPath: 'watch_RunCmdFirstTimeOnly',
+        needsValue: false,
+        commands: ['resolve', 'wrap'],
     },
     {
         param: '--preprocessDefines',

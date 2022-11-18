@@ -183,18 +183,27 @@ export async function wrap(command, options) {
     }
 
     // Exec command
-    LogCond("--- Command wrap", options.log);
-    try {
-        execSync(command, (err, stdout, stdrr) => {
-            console.log(stdout);
-            
-            if (err) throw err;
-            if (stdrr) throw stdrr;
-        });
-    } catch (err) {
-        LogError("prebuild wrap error: sub-command run with error:\n" + err, false, false);
+    if (!options.watch || // run anytime
+        (options.watch && !options.watch_RunCmdFirstTimeOnly) || // watch + run anytime
+        (options.watch && options.watch_RunCmdFirstTimeOnly && !global.didRunCmdFirstTimeOnly)) { // watch + run first time
+        
+
+        LogCond("--- Command wrap", options.log);
+        try {
+            execSync(command, (err, stdout, stdrr) => {
+                console.log(stdout);
+                
+                if (err) throw err;
+                if (stdrr) throw stdrr;
+            });
+        } catch (err) {
+            LogError("prebuild wrap error: sub-command run with error:\n" + err, false, false);
+        }
+        LogCond("--- Command end", options.log);
+
+
+        global.didRunCmdFirstTimeOnly = true;
     }
-    LogCond("--- Command end", options.log);
 
     // Restore
     if (options.onTheSpot) {

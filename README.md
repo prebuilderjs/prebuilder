@@ -276,6 +276,7 @@ prebuild resolve --srcDir "src"
 | `--onTheSpot`         | ❌                    | ❌           |                                                                                              |
 | `--log`               | ❌                    | ❌           |                                                                                              |
 | `--watch`             | ❌                    | ❌           |                                                                                              |
+| `--watch_RunCmdFirstTimeOnly`  | ❌           | ❌           |                                                                                              |
 | `--preprocessDefines` | ❌                    | ✔            | `prebuild resolve --preprocessDefines "MY_DEF"`<br>`--preprocessDefines "DEFINE1, DEFINE2"`  |
 | `--preprocessMode`    | ❌                    | ✔            | `prebuild resolve --preprocessMode "both"`                                                   |
 | `--config`            | ❌                    | ✔            | `prebuild resolve --config "myprebulder.config.js"`                                          |
@@ -351,8 +352,9 @@ prebuild --help
 | `--srcDir`                    | `-s`  | path (string)                   | Source folder's path.                                                                                                  |
 | `--outDir`                    | `-o`  | path (string)                   | Output folder's path.                                                                                                  |
 | `--log`                       | `-l`  |                                 | Enable debug logging.                                                                                                  |
-| `--watch`                     | `-w`  |                                 | Watch source for changes, and auto-prebuild                                                                            |
 | `--formats`                   | `-f`  | extention, or set of <br>extentions separated <br>by a comma `,` (string)     | List of file formats to preprocess.                                      |
+| `--watch`                     | `-w`  |                                 | Watch source for changes, and auto-prebuild                                                                            |
+| `--watch_RunCmdFirstTimeOnly` |       |                                 | Run command only the first time, when passing it to wrap() with watch mode active                                      |
 | `--onTheSpot`                 |       |                                 | Resolve scripts keeping them in their source folder                                                                    |
 | `--preprocessDefines`         |       | define, or set of <br>defines separated <br>by a comma `,` (string)           | List of defines based on which to validate <br>#if statements.           |
 | `--preprocessMode`            |       | `"plain"` or<br>`"commented"` or<br>`"both"`  | Wether to preprocess directives written <br>plainly `#if` or in a comment `//#if`. <br>Default value is "both".  |
