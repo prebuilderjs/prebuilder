@@ -118,7 +118,11 @@ export async function resolve(options = { formats: ['.js', '.ts'], preprocessOpt
         LogColor("prebuilder in watch mode...\n", 'cyan');
 
         if (!global.watcher) {
-            global.watcher = chokidar.watch(options.srcDir, {persistent: true, awaitWriteFinish: true, });
+            global.watcher = chokidar.watch(options.srcDir, {
+                persistent: true,
+                awaitWriteFinish: true,
+                ignoreInitial: true,
+            });
             global.watcher.on('add', () => { resolve(options); })
                 .on('change', () => { resolve(options); })
                 .on('unlink', () => { resolve(options); })
@@ -228,7 +232,11 @@ export async function wrap(command, options) {
     } else if (options.watch) {
 
         if (!global.watcher) {
-            global.watcher = chokidar.watch(options.srcDir, {persistent: true, awaitWriteFinish: true,  });
+            global.watcher = chokidar.watch(options.srcDir, {
+                persistent: true,
+                awaitWriteFinish: true,
+                ignoreInitial: true,
+            });
             global.watcher.on('add', () => { wrap(command, options); })
                 .on('change', () => { wrap(command, options); })
                 .on('unlink', () => { wrap(command, options); })
