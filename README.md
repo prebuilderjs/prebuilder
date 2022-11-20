@@ -15,6 +15,12 @@
         <img src="https://img.shields.io/github/license/prebuilderjs/prebuilder">
     </a>
     <img src="https://visitor-badge.glitch.me/badge?page_id=prebuilderjs.prebuilder&style=flat">
+    <a href="https://www.npmjs.com/package/prebuilder" alt="Npm downloads">
+        <img src="https://img.shields.io/npm/dt/prebuilder">
+    </a>
+    <a href="https://twitter.com/intent/follow?screen_name=prebuilderjs" alt="Follow">
+        <img src="https://img.shields.io/static/v1?label=Follow%20on&message=Twitter&color=blue">
+    </a>
 </p>
 
 <p style="text-align:center" align="center">
@@ -64,7 +70,7 @@ npm i --save-dev prebuilder
 Using:
 
 ```sh
-prebuild resolve --srcDir "src" --preprocessDefines "TARGET_BROWSER, ANDROID"
+prebuild resolve --srcDir "src" --outDir "pre-build" --preprocessDefines "TARGET_BROWSER, ANDROID"
 ```
 
 ### Case 1) import depending on target platform
